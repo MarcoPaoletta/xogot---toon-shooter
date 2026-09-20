@@ -5,7 +5,7 @@
 **Engine stamp:** `config/features = ["4.7", "Mobile"]` (Xogot 1.7.2 / Godot 4.7.2). Never upgraded by the build.
 **Art:** Quaternius *Toon Shooter Game Kit* (Dec 2022), CC0, imported at `res://assets/Toon Shooter Game Kit - Dec 2022/` (the pack's own folder name, structure untouched). Every model, with its measured size, is listed in `docs/asset-inventory.md`.
 **Concept image:** `docs/concept/concept.png` (1600 x 893). It is the acceptance test for the look, see section 1.
-**Document version:** 1.1, 2026-09-20 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16).
+**Document version:** 1.2, 2026-09-20 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16; 1.2 three starting weapons, eleven unlocks in the yard and the weapon wheel, section 17).
 **Status:** Specification. At the time of writing the project contains the asset pack, this document and nothing else: zero scenes, zero scripts.
 
 ---
@@ -588,3 +588,55 @@ Step 8 becomes: the blaster and the shared `weapon.gd`, the tracer, the flash, t
 ### 16.9 Definition of done and the master prompt (adds to 15)
 
 Item 2 of the definition of done adds `test_weapons`, `test_crates` and `test_switch`. A new item 8: a run watched through screenshots in which the player picks up every crate and fires every one of the fourteen weapons at least once (`docs/evidence/weapon-<name>.png`, fourteen files). The master prompt of section 15 changes one sentence: "Version 1.1 has one arena, one player, **all fourteen weapons of the kit collected from crates between waves as in section 16**, one enemy type with one behaviour, five waves, health, score, a menu with a moving camera through the built yard and a results screen; the second enemy behaviour is reserved for the on camera iteration and gets only the spawner slot described in 13.1. Do not add anything else."
+
+## 17. Version 1.2: three to start, eleven to find, and the weapon wheel (supersedes 16.1, 16.3, 16.4, the crate parts of 16.5 and 16.8, the ammo HUD of 16.2, and the Tab binding of 1.3)
+
+**Why.** Fourteen weapons handed out on a schedule is a lot of bookkeeping for the player and it hides the yard. Version 1.2 keeps all fourteen (section 16 stands for the weapons themselves, their numbers, their prefabs, their sounds and their tests) and changes how they are obtained and selected: the player **starts with three**, the other **eleven are lying around the arena from the first second** as crates the player walks into, and every owned weapon is selected from a **weapon wheel** held open with a key and steered with the mouse, in the style of a dance wheel, showing the **real 3D models rotating**, never icons.
+
+### 17.1 Starting weapons and unlocks (supersedes 16.3 and 16.4)
+
+- **Start:** Blaster (`AK`, infinite), Pistol (`Pistol`, 72 rounds instead of 36, since it has no crate) and Knife (`Knife_1`, infinite). One of each category of range: automatic, precise, melee.
+- **Unlock by pickup.** The other eleven weapons are `WeaponCrate` instances (the prefab of 16.3 unchanged: the `Crate` model, the loose `Guns/glTF` model floating and rotating above it, the light, the billboard name) placed by hand in `res://scenes/arena.tscn` under `Arena/WeaponCrates`, **present from the start of wave 1**, at these spots, chosen so the weak ones are near the spawn and the strong ones are far or exposed:
+
+| Crate node | Weapon | Position | Where it is |
+|---|---|---|---|
+| `CrateRevolver` | `Revolver` | `(-6, 0, 10)` | behind the left sandbag cluster, near the spawn |
+| `CrateRevolverSmall` | `Revolver_Small` | `(3, 0, 11)` | in the open south of the spawn |
+| `CrateSMG` | `SMG` | `(-9, 0, 4)` | behind the left fence, around its end |
+| `CrateShotgun` | `Shotgun` | `(11, 0, 6)` | behind the right fence |
+| `CrateShortCannon` | `ShortCannon` | `(14, 0, 12)` | south east corner by `Barrier_Trash` |
+| `CrateSniper` | `Sniper` | `(-10, 0, -15)` | north west container corner |
+| `CrateSniper2` | `Sniper_2` | `(-14, 0, 14)` | south west corner by the cardboard boxes |
+| `CrateGrenadeLauncher` | `GrenadeLauncher` | `(-2, 0, -12)` | behind the central stack, facing the north spawns |
+| `CrateRocketLauncher` | `RocketLauncher` | `(13, 0, -6)` | by the east gate, the most exposed spot in the yard |
+| `CrateKnife2` | `Knife_2` | `(8, 0, -13)` | by the barrel cluster |
+| `CrateShovel` | `Shovel` | `(2, 0, 14)` | by the pallets at the south fence |
+
+- Walking into a crate **unlocks that weapon for the rest of the run** (it appears in the wheel), fills its ammo, plays the pickup sound and the gold burst, shows "UNLOCKED: SHOTGUN" in `Message` for 1.5 s, and auto equips it if the player is holding the blaster. The crate then disappears and **reappears at the same spot 45 s later as an ammo refill** for that weapon (same look, same sound, "REFILL" instead of "UNLOCKED"), so the yard keeps giving. Melee crates do not reappear (infinite anyway).
+- Bandits ignore crates; a crate has no collision for bullets (layer 4 only).
+- The crate schedule of 16.4 is gone: nothing spawns between waves except the two health pickups of 7.5. The tutorial message of 16.4 becomes "Weapons are hidden around the yard. Hold Tab to choose one" at 6 s of wave 1.
+- A counter on the HUD (17.3) shows "3 / 14 weapons".
+
+### 17.2 The weapon wheel (supersedes 16.1)
+
+`res://scenes/ui/weapon_wheel.tscn`, root `WeaponWheel` (`Control`, full rect, hidden when closed), a child of `HUD`.
+
+**Opening and steering.** The action `weapon_wheel` is bound to **Tab**. While Tab is held the wheel is open: the mouse stays captured, mouse motion no longer turns the camera, `Engine.time_scale` drops to 0.25 over 0.1 s (the game slows, it does not pause, so the wheel is a decision under pressure), the world behind gets a 40 % dark dim. The selection is steered by the **accumulated mouse delta since Tab was pressed**: while its length is under 40 px nothing is hovered (the centre shows the held weapon); beyond 40 px the delta's angle picks one of the fourteen sectors. Releasing Tab closes the wheel over 0.1 s, restores the time scale, and **equips the hovered weapon** if it is unlocked (the 0.25 s switch of 16.1); an empty or locked hover keeps the current weapon. The mouse wheel still cycles through unlocked weapons in table order and **Q** still swaps to the previous weapon (both from 16.1); the category keys 1 to 7 of 16.1 are removed. `snap_concept_view` (section 1.3) moves from Tab to **F1**.
+
+**Geometry** (design canvas 1920 x 1080, centred): a ring with outer radius 300 px and inner radius 190 px, split into fourteen equal sectors of 25.7°, the first sector centred at the top (12 o'clock) and the rest clockwise in the order of the table in 16.2: Blaster, Pistol, Revolver, Small revolver, SMG, Shotgun, Sawn off, Sniper, Light sniper, Grenade launcher, Rocket launcher, Knife, Combat knife, Shovel. The ring is drawn in code (`_draw()`: filled arcs, a 3 px gap between sectors, base colour `#1e1e22` at 85 % alpha, hovered sector `#2f6fd6`, the held weapon's sector outlined in white 3 px, locked sectors at 45 % alpha). Above the ring, a label with the hovered (or held) weapon's name in capitals, 44 px, and under it its ammo ("12 / 16", "∞", or "LOCKED: find it in the yard" in `#c8c8c8`). Below the ring, the "3 / 14 weapons" counter. Nothing else on screen changes.
+
+**The models, not icons.** Each sector shows the weapon's **real 3D model, rotating on its own vertical axis**. One `SubViewport` named `ModelsViewport` (1024 x 1024, transparent background, `render_target_update_mode` Always while the wheel is open, Disabled while closed so it costs nothing), shown through a `TextureRect` named `Models` centred on the ring, holds a small 3D scene `WheelScene` (`Node3D`): an orthographic `Camera3D` (`size` 8.0, looking down `-Z`), a `DirectionalLight3D` (`rotation_degrees (-35, 30, 0)`, energy 1.2) and a fill `DirectionalLight3D` from the opposite side at energy 0.4, and fourteen `Node3D` named `Slot1` to `Slot14` on a circle of radius 3.2 units in the XY plane at the fourteen sector centres. Each slot holds the weapon's loose model from `Guns/glTF/` (for example `res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/RocketLauncher.gltf`), offset so its AABB centre sits on the slot's origin, scaled so its longest AABB side (from `docs/asset-inventory.md`) measures 1.2 units, and rotating about its own Y axis at 60° per second, continuous, all slots in phase. A locked weapon's model gets a `surface_material_override` on every surface of `res://materials/wheel_locked.tres` (unshaded, `#2a2a2e`, 55 % alpha), so it reads as a dark silhouette; unlocking removes the override with a 0.3 s pop (scale 1.0 to 1.25 to 1.0). The hovered model scales to 1.2 over 0.08 s. Because the ring is 190 to 300 px and the orthographic camera maps 8 units onto 1024 px, a 1.2 unit model is about 154 px long and sits inside the sector's 110 px band with the ends over the ring's edges, which is the intended look.
+
+**Rules.** No 2D icons for weapons anywhere in the game: the wheel, the HUD and the crates all use the 3D models. The wheel does not open while dead, during the results screen or while paused. Opening it does not interrupt a reload (there is none) or a switch already in progress (the switch completes, then the wheel's choice applies).
+
+### 17.3 HUD (supersedes the ammo block of 16.2)
+
+Bottom right: the held weapon's name (32 px) and ammo (40 px, "∞" for the blaster and the melee weapons), and under them "3 / 14 weapons" (24 px), no category row. A "Tab: weapons" hint 24 px next to it for the first 10 s of wave 1 and whenever a new weapon is unlocked (3 s).
+
+### 17.4 Scenes and tests (adds to 16.5 and 16.8)
+
+- `res://scenes/ui/weapon_wheel.tscn` with `Ring` (`Control`, code drawn), `ModelsViewport` (`SubViewport`) holding `WheelScene`, `Models` (`TextureRect`), `Name`, `Ammo`, `Counter` (`Label`). Script `weapon_wheel.gd`. Instanced in `hud.tscn` as `WeaponWheel`.
+- `Arena/WeaponCrates` with the eleven crates of 17.1; `Arena/CratePoints` of 16.3 is removed.
+- `tests/test_crates.gd` becomes: at the start of wave 1 exactly eleven `WeaponCrate` nodes exist, one per non starting weapon, at the positions of 17.1 (± 0.01); a scripted player teleported into each of them ends with fourteen unlocked weapons and the counter reading "14 / 14"; a picked crate is absent for 45 s and present again at 46 s with the refill label; the melee crates do not return.
+- `tests/test_wheel.gd` (replaces `test_switch.gd`): with Tab held, an injected mouse delta of 120 px toward sector k (angle `k x 25.7°` clockwise from the top) followed by a Tab release equips weapon k if unlocked and leaves the held weapon unchanged if locked; the time scale is 0.25 while open and 1.0 after; every `Slot1` to `Slot14` contains a `MeshInstance3D` whose mesh comes from the right `Guns/glTF/` file (checked by the model's node name); locked slots carry the override and unlocked ones do not; the models' rotation advances between two frames.
+- The definition of done item 8 of 16.9 becomes: a run watched through screenshots in which the player finds all eleven crates and fires every one of the fourteen weapons (`docs/evidence/weapon-<name>.png`), plus `docs/evidence/wheel-open.png` showing the wheel with at least six unlocked models and at least one locked silhouette, and `docs/evidence/wheel-full.png` with all fourteen unlocked.

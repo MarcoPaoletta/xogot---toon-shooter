@@ -1,6 +1,6 @@
 # Container Yard
 
-A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **TBD, filled after the build**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster that never runs dry and collect the other thirteen weapons of the kit from crates between waves: pistols, revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, knives and a shovel. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
+A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **TBD, filled after the build**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster, a pistol and a knife and find the other eleven weapons of the kit lying around the yard: revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, a second knife and a shovel. A weapon wheel held open with Tab shows all fourteen as their real 3D models, rotating. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
 
 It starts from an empty project, one free asset pack, one concept image and one design document. Every scene in the game is created and edited inside the Xogot editor by the agent (scene, node, material, particle and UI commands through `xo`), not hand written as `.tscn` text.
 
@@ -10,7 +10,7 @@ Built for the next Letta Corporation video.
 
 1. Install [Xogot for Mac](https://xogot.com/mac) (free while it is in beta) or Godot 4.7.
 2. Open `project.godot`.
-3. Press play. Controls: TBD, filled after the build (the design specifies WASD to move, mouse to aim, left button to fire, right button to aim, mouse wheel and 1 to 7 to switch weapons, Q for the previous weapon, Escape to pause; Tab is a development only view that snaps the camera to the concept image's pose).
+3. Press play. Controls: TBD, filled after the build (the design specifies WASD to move, mouse to aim, left button to fire, right button to aim, hold Tab and move the mouse for the weapon wheel, mouse wheel to cycle, Q for the previous weapon, Escape to pause; F1 is a development only view that snaps the camera to the concept image's pose).
 
 ## The game design document
 
@@ -28,7 +28,8 @@ The full spec lives in [`docs/GDD.md`](docs/GDD.md) (also as [`docs/GDD.pdf`](do
 
 5. **The document is versioned after each round of play, it is never rewritten.** The first build is one prompt: *create the game, follow @docs/GDD.md*. After playing that build, changes are written as a new section that supersedes the earlier ones, and the agent is pointed at the new section:
    - **1.0** the pre build specification (sections 0 to 15).
-   - **1.1** the full arsenal: all fourteen weapons of the kit, collected from crates between waves (section 16).
+   - **1.1** the full arsenal: all fourteen weapons of the kit (section 16).
+   - **1.2** three starting weapons, eleven unlocks placed around the yard, and the weapon wheel with rotating 3D models (section 17).
    - TBD, filled after the build.
 
 6. **Iterate with screenshots, not descriptions.** The concept image is the acceptance test for the look, judged in a fixed check order (camera height and horizon, distance and FOV, subject position, silhouettes, props, sky, ground, sun, fog, glow, grade, UI), fixing only the first failing item each time. The agent takes its own screenshots and runs the game through `xo`, so it checks its own work before reporting back.
