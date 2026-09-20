@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://5qq2105s5rwg"
+path="res://.godot/imported/Character_Hazmat.obj-3724c23b24c8c37c65fce8cf9d9c6124.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Character_Hazmat.obj-3724c23b24c8c37c65fce8cf9d9c6124.mesh"]
+
+source_file="res://assets/Toon Shooter Game Kit - Dec 2022/Characters/OBJ/Character_Hazmat.obj"
+dest_files=["res://.godot/imported/Character_Hazmat.obj-3724c23b24c8c37c65fce8cf9d9c6124.mesh", "res://.godot/imported/Character_Hazmat.obj-3724c23b24c8c37c65fce8cf9d9c6124.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://g6dh4m8e0hq3"
+path="res://.godot/imported/TrashContainer_Open.obj-b2bf751ae566225446e45050776f2c5e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/TrashContainer_Open.obj-b2bf751ae566225446e45050776f2c5e.mesh"]
+
+source_file="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/OBJ/TrashContainer_Open.obj"
+dest_files=["res://.godot/imported/TrashContainer_Open.obj-b2bf751ae566225446e45050776f2c5e.mesh", "res://.godot/imported/TrashContainer_Open.obj-b2bf751ae566225446e45050776f2c5e.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
