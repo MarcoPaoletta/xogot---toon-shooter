@@ -1,6 +1,6 @@
 # Container Yard
 
-A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **TBD, filled after the build**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire a blaster that never runs dry. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
+A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **TBD, filled after the build**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster that never runs dry and collect the other thirteen weapons of the kit from crates between waves: pistols, revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, knives and a shovel. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
 
 It starts from an empty project, one free asset pack, one concept image and one design document. Every scene in the game is created and edited inside the Xogot editor by the agent (scene, node, material, particle and UI commands through `xo`), not hand written as `.tscn` text.
 
@@ -10,7 +10,7 @@ Built for the next Letta Corporation video.
 
 1. Install [Xogot for Mac](https://xogot.com/mac) (free while it is in beta) or Godot 4.7.
 2. Open `project.godot`.
-3. Press play. Controls: TBD, filled after the build (the design specifies WASD to move, mouse to aim, left button to fire, right button to aim, Escape to pause; Tab is a development only view that snaps the camera to the concept image's pose).
+3. Press play. Controls: TBD, filled after the build (the design specifies WASD to move, mouse to aim, left button to fire, right button to aim, mouse wheel and 1 to 7 to switch weapons, Q for the previous weapon, Escape to pause; Tab is a development only view that snaps the camera to the concept image's pose).
 
 ## The game design document
 
@@ -24,10 +24,11 @@ The full spec lives in [`docs/GDD.md`](docs/GDD.md) (also as [`docs/GDD.pdf`](do
 
 3. **Every pillar and every non trivial mechanic carries an acceptance test.** The look is tested against the concept image with a side by side comparison after every visual milestone (`docs/evidence/`). The camera is tested by moving the player one unit and reading where the camera went the same frame. The enemies are tested by a differential test that fails a bandit which never moves. A test the agent can run is the difference between an agent that declares something finished and one that cannot.
 
-4. **Scope is written down, including what is out.** Section 13 has an explicit cut list and a numbered build order where each step ends with a run in Xogot, a screenshot check and a commit. Two things are reserved on purpose for the live session that follows the build: one new enemy behaviour and one new weapon. Section 14 lists every asset the design needs that the pack does not contain, and what to do instead (audio synthesised by a script, effects and HUD drawn in code, container colours through material overrides).
+4. **Scope is written down, including what is out.** Section 13 has an explicit cut list and a numbered build order where each step ends with a run in Xogot, a screenshot check and a commit. One thing is reserved on purpose for the live session that follows the build: one new enemy behaviour. Section 14 lists every asset the design needs that the pack does not contain, and what to do instead (audio synthesised by a script, effects and HUD drawn in code, container colours through material overrides).
 
 5. **The document is versioned after each round of play, it is never rewritten.** The first build is one prompt: *create the game, follow @docs/GDD.md*. After playing that build, changes are written as a new section that supersedes the earlier ones, and the agent is pointed at the new section:
    - **1.0** the pre build specification (sections 0 to 15).
+   - **1.1** the full arsenal: all fourteen weapons of the kit, collected from crates between waves (section 16).
    - TBD, filled after the build.
 
 6. **Iterate with screenshots, not descriptions.** The concept image is the acceptance test for the look, judged in a fixed check order (camera height and horizon, distance and FOV, subject position, silhouettes, props, sky, ground, sun, fog, glow, grade, UI), fixing only the first failing item each time. The agent takes its own screenshots and runs the game through `xo`, so it checks its own work before reporting back.

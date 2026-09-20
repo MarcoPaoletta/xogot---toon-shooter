@@ -5,7 +5,7 @@
 **Engine stamp:** `config/features = ["4.7", "Mobile"]` (Xogot 1.7.2 / Godot 4.7.2). Never upgraded by the build.
 **Art:** Quaternius *Toon Shooter Game Kit* (Dec 2022), CC0, imported at `res://assets/Toon Shooter Game Kit - Dec 2022/` (the pack's own folder name, structure untouched). Every model, with its measured size, is listed in `docs/asset-inventory.md`.
 **Concept image:** `docs/concept/concept.png` (1600 x 893). It is the acceptance test for the look, see section 1.
-**Document version:** 1.0, 2026-09-20, pre-build specification.
+**Document version:** 1.1, 2026-09-20 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16).
 **Status:** Specification. At the time of writing the project contains the asset pack, this document and nothing else: zero scenes, zero scripts.
 
 ---
@@ -498,3 +498,93 @@ Tutorial: wave 1 shows three timed messages in `Message`: "WASD to move, mouse t
 7. One commit per build order step, pushed.
 
 **Master prompt paragraph** (what the building agent is told, in full): Build Container Yard from this document, in the Xogot editor through `xo`, following the build order of section 13.2 step by step, one commit per step, a run and a screenshot at the end of each. Section 1 is the acceptance test for the look: keep `docs/concept/concept.png` open, produce `docs/evidence/comparison-NN.png` after every visual milestone with `tools/compare.py`, judge it in the fixed check order and fix only the first failing item, until `comparison-final.png` passes. Every scene is a saved `.tscn` built in the editor with semantic node names; scripts add behaviour and never build the tree; bandits, pickups and effects are instanced from saved prefabs. Every 3D object is a real path from `docs/asset-inventory.md`; the pack files are never edited, colours change through material overrides. The camera has no position smoothing. Facing follows the camera yaw while aiming or firing, and the three facing tests pass. Bandits never leave the yard and never enter geometry, and the differential bounds test that fails a bandit which does not move passes. Audio is synthesised by `tools/gen_audio.py` and obeys the three rules: no chiptune or 8 bit anywhere; every music loop is seamless with at least 45 seconds of distinct material; every SFX is physical and satisfying with random pitch variation. The launch settings are 1920 x 1080, `canvas_items`, `expand`, fullscreen on Mac, and are in place before any UI is laid out. Version 1.0 has one arena, one player, one weapon, one enemy type with one behaviour, five waves, health, score, a menu with a moving camera through the built yard and a results screen; the second enemy behaviour and the second weapon are reserved for the on camera iteration and get only the slots described in 13.1. Do not add anything else.
+
+## 16. Version 1.1: the full arsenal (supersedes 7.3, the weapon rows of 5, 8, 10, 11.2, 12, 13.1, 13.2 and 15)
+
+**Why.** The Toon Shooter Game Kit ships fourteen weapon meshes inside every character file and fourteen matching loose models in `Guns/glTF/`: `AK`, `Pistol`, `Revolver`, `Revolver_Small`, `SMG`, `Shotgun`, `ShortCannon`, `Sniper`, `Sniper_2`, `GrenadeLauncher`, `RocketLauncher`, `Knife_1`, `Knife_2`, `Shovel`. Version 1.0 used one. Version 1.1 uses **all fourteen**: the player starts with the blaster and collects the other thirteen from weapon crates that appear between waves, so that a complete run puts every weapon of the kit in the player's hands. This is a firm requirement, not a nice to have: the definition of done (16.9) fails if any of the fourteen cannot be picked up and fired in one run. Bandits are unchanged (one type, one behaviour, pistol). The reserved weapon of 13.1 is withdrawn; the reserved enemy behaviour stays as the on camera iteration.
+
+### 16.1 Inventory and switching (supersedes the weapon rows of section 5)
+
+The player owns a list of weapons, in the fixed order of the table in 16.2. The blaster is owned from the start and never runs dry; every other weapon is owned once its crate has been picked up and carries its own ammo. Exactly one weapon is held; its mesh is the only visible weapon mesh on the character (the rule of section 9 still holds: one visible weapon mesh per character at all times).
+
+| Action name | Binding | Effect |
+|---|---|---|
+| `weapon_next` / `weapon_prev` | Mouse wheel down / up | Cycle through the owned weapons in table order, wrapping. Switching takes 0.25 s (`Idle_Shoot` blend, the old mesh hides and the new one shows at 0.12 s); firing during the switch is ignored. |
+| `weapon_last` | Q | Swap to the previously held weapon. |
+| `weapon_1` to `weapon_7` | 1 to 7 | Pick a category (16.2): 1 blaster, 2 sidearms, 3 automatic, 4 shotguns, 5 snipers, 6 launchers, 7 melee. Pressing the same key again cycles inside the category among the owned weapons. A category with nothing owned does nothing and the HUD flashes the empty slot. |
+| `fire` | Left mouse button | As before. Semi automatic weapons fire once per press; automatic weapons fire while held; melee weapons swing once per press. |
+| `aim` | Right mouse button | As before; for the snipers the aim FOV is the scope FOV of 16.2 instead of 40. |
+
+A weapon with zero ammo stays owned and selectable, plays the empty click on `fire` and shows "0" in red on the HUD; a new crate of the same weapon refills it to its full load. Ammo never drops from bandits.
+
+### 16.2 The fourteen weapons (supersedes 7.3)
+
+All hitscan weapons trace from the camera through the crosshair (section 7.3) with the listed cone; damage is per hit (per pellet for shotguns). Projectiles spawn at `Muzzle` aimed at the point the crosshair ray hits at 60 units (or the ray's end). Melee weapons hit every bandit inside the reach and arc in front of the player, once per swing, on the swing's contact frame (0.35 of the clip). A bandit has 30 health. Recoil kicks the camera pitch by the listed amount and returns over 0.12 s. All weapons use the tracer, flash and impact prefabs of 7.3 unless noted. Every weapon is its own prefab `res://scenes/weapons/<name>.tscn` (root `Node3D` named after the weapon) that only carries exported numbers and its sounds; the fourteen prefabs share one script `weapon.gd` with three modes (hitscan, projectile, melee). The mesh is the character's own mesh of the same name.
+
+| Cat. | Weapon (mesh) | Mode | Rate | Damage | Cone / reach | Ammo per crate | Recoil | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Blaster (`AK`, red override) | hitscan, automatic | 8 per s | 10 | 1.2° (0.5° aimed) | infinite | 0.6° | the starting weapon of 1.0, unchanged |
+| 2 | Pistol (`Pistol`) | hitscan, semi | up to 4 per s | 15 | 0.8° | 36 | 0.8° | the bandits' gun |
+| 2 | Revolver (`Revolver`) | hitscan, semi | up to 2.5 per s | 35 | 0.4° | 18 | 2.0° | one hit staggers: the bandit's `HitReact` lasts 0.6 s instead of 0.43 |
+| 2 | Small revolver (`Revolver_Small`) | hitscan, semi | up to 5 per s | 18 | 1.0° | 30 | 0.9° | |
+| 3 | SMG (`SMG`) | hitscan, automatic | 14 per s | 6 | 2.5° (1.5° aimed) | 120 | 0.3° | the cone grows by 0.1° per shot held, up to 4°, and resets 0.3 s after release |
+| 4 | Shotgun (`Shotgun`) | hitscan, 8 pellets, semi | up to 1.2 per s | 7 per pellet | 7° cone, range 18 | 16 shells | 3.0° | a pellet beyond 18 units does nothing |
+| 4 | Sawn off (`ShortCannon`) | hitscan, 10 pellets, semi | up to 0.9 per s | 8 per pellet | 10° cone, range 12 | 12 shells | 4.0° | knocks a bandit hit by 5 or more pellets back 1.0 unit |
+| 5 | Sniper (`Sniper`) | hitscan, semi | up to 0.8 per s | 90 | 0.1°, 0.05° aimed | 10 | 2.5° | aim FOV 25 with a code drawn scope circle; hip fire cone 3° |
+| 5 | Light sniper (`Sniper_2`) | hitscan, semi | up to 1.2 per s | 60 | 0.2°, 0.1° aimed | 14 | 1.8° | aim FOV 30; hip fire cone 2.5° |
+| 6 | Grenade launcher (`GrenadeLauncher`) | projectile, arc | 1 per s | 60 at the centre falling to 20 at the edge, radius 3.0 | speed 18, gravity 24 | 8 | 1.5° | the `Grenade` model as the projectile; bounces up to 2 times (restitution 0.4), explodes on touching a bandit or 1.5 s after launch |
+| 6 | Rocket launcher (`RocketLauncher`) | projectile, straight | 0.6 per s | 120 at the centre falling to 30 at the edge, radius 4.0 | speed 30, no gravity | 4 | 3.0° | a `FireGrenade` model as the rocket with a smoke trail (`GPUParticles3D`, 30 per s, 0.6 s life); explodes on any contact |
+| 7 | Knife (`Knife_1`) | melee | 2 swings per s | 40 | reach 1.8, arc 90° | infinite | 0 | `Punch` clip; the player runs 10 % faster while holding a melee weapon |
+| 7 | Combat knife (`Knife_2`) | melee | 2.5 swings per s | 30 | reach 1.6, arc 90° | infinite | 0 | as above |
+| 7 | Shovel (`Shovel`) | melee | 1.2 swings per s | 70 | reach 2.2, arc 120° | infinite | 0 | knocks the bandit back 1.5 units; `Punch` clip slowed to 0.7 speed |
+
+**Explosions** (launchers): `res://scenes/fx/explosion.tscn`: a one shot `GPUParticles3D` fireball (24 particles, `SphereMesh` 0.3, `#ffb347` to `#4a3a30` over 0.5 s), an `OmniLight3D` flash (range 8, energy 6, 0.08 s), a 0.25 s camera shake of 0.15 units, the explosion sound. Damage is applied to every bandit and to the player inside the radius, falling linearly from the centre value to the edge value; the player takes 50 % of it (self damage exists, so firing a rocket at the sandbag in front of you hurts). `ExplodingBarrel` still does not explode (cut list).
+
+**Ammo on the HUD** (supersedes 11.2, bottom right): the held weapon's name (32 px) and its ammo as "12 / 16" (40 px) or "∞" for the blaster and the melee weapons; a row of seven category slots (36 x 36 px each, code drawn squares with the category number) showing owned categories filled and the held one highlighted. A weapon switch flashes the name for 0.3 s.
+
+### 16.3 Weapon crates (new pickup)
+
+`res://scenes/actors/weapon_crate.tscn`, root `WeaponCrate` (`Area3D`, layer 4, monitoring layer 2), a `Crate` model on the ground with the weapon's loose model from `Guns/glTF/` (for example `res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/Shotgun.gltf`) floating 0.6 units above it at scale 1.0, rotating 90° per second and bobbing ± 0.08 units over 1.6 s, an `OmniLight3D` `#ffd36b` energy 1.2 range 2.5, and a `Label3D` with the weapon's name 1.4 units above the crate, billboarded, 0.6 units of text height. An exported `weapon_id` selects the weapon. Walking into it gives the weapon with its full ammo (or refills it if owned), auto switches to it if the player is holding the blaster, plays the pickup sound and a gold burst, and frees the node. Crates persist until picked up. Crate points: eight `Marker3D` under `Arena/CratePoints`: `CrateA (-6, 0, 10)`, `CrateB (3, 0, 11)`, `CrateC (11, 0, 6)`, `CrateD (13, 0, -6)`, `CrateE (-2, 0, -12)`, `CrateF (-12, 0, -4)`, `CrateG (-9, 0, 4)`, `CrateH (8, 0, -13)`. Crate points and health pickup points never coincide.
+
+### 16.4 The crate schedule (supersedes the wave table's implications in 12)
+
+Crates appear at the start of each breather, at crate points that are empty, chosen with the wave's seed. Every weapon appears exactly once in a run, so a run that collects every crate holds all fourteen weapons before wave 5:
+
+| Breather after wave | Crates | Weapons |
+|---|---|---|
+| 1 | 2 | Pistol, Shotgun |
+| 2 | 3 | SMG, Knife_1, Revolver |
+| 3 | 3 | Sniper, GrenadeLauncher, Revolver_Small |
+| 4 | 5 | RocketLauncher, Sniper_2, ShortCannon, Shovel, Knife_2 |
+
+The wave table of section 12 stays as written for the first playthrough; the tuning pass after it may raise the bandit counts of waves 4 and 5 (up to 14 and 18) to pay for the heavier weapons, never their health or their damage. The tutorial gains one message at the first breather: "Weapon crates: walk into them, switch with the wheel or 1 to 7".
+
+### 16.5 Scenes (supersedes the weapon rows of section 8)
+
+- `res://scenes/weapons/blaster.tscn` and the thirteen others (`pistol`, `revolver`, `revolver_small`, `smg`, `shotgun`, `short_cannon`, `sniper`, `sniper_2`, `grenade_launcher`, `rocket_launcher`, `knife_1`, `knife_2`, `shovel`), one prefab each, root `Node3D` named `Blaster`, `Pistol`, and so on, all with `res://scripts/weapons/weapon.gd` and their exported numbers set in the inspector (through `xo node property set`), with `Sounds` (`Fire`, `Empty`, `Switch`) as children.
+- `res://scenes/weapons/grenade.tscn` (root `Grenade`, `RigidBody3D`, the `Grenade` model, sphere collision 0.2) and `res://scenes/weapons/rocket.tscn` (root `Rocket`, `Area3D` moved by script, the `FireGrenade` model, the smoke trail).
+- `res://scenes/fx/explosion.tscn`.
+- `res://scenes/actors/weapon_crate.tscn`.
+- `Player/WeaponSlot` holds all fourteen weapon prefab instances as children, named after the weapon; only the held one processes. `Player` exports nothing about weapons any more; the inventory is the list of owned weapon names, saved nowhere (a run starts with the blaster).
+- `Arena/CratePoints` with the eight markers; `Arena/Pickups` is the runtime parent of crates and health pickups.
+
+Signals: `Weapon.fired(kind, origin, hit_point, hit_body)` for hitscan and melee, `Weapon.launched(projectile)` for projectiles, `Projectile.exploded(position, radius, damage_centre, damage_edge)` → `Arena.on_explosion`, `WeaponCrate.collected(weapon_id)` → `Player.give_weapon`.
+
+### 16.6 Audio (adds to section 10; the three hard rules apply unchanged)
+
+Each weapon gets its own fire sound from `tools/gen_audio.py`, physical, with a transient, a body and a tail, pitch varied ± 6 % per shot: the pistol crack (60 ms), the revolver's heavier bang with a 250 ms tail, the small revolver's snappy pop, the SMG's short dry rattle per shot, the shotgun's boom with a 300 ms low tail, the sawn off's wider boom, the sniper's long crack with a 500 ms echo, the light sniper's shorter one, the grenade launcher's hollow thunk, the rocket's whoosh and ignition roar, the knives' swish (two variants) and a wet hit, the shovel's whoosh and a metallic clang on a hit. Plus: the explosion (a 700 ms low boom with debris crackle), the grenade bounce (a metallic tick), the empty click, the weapon switch (a mechanical clack), the crate pickup (a rising three note chime, distinct from the health chime). `--verify` checks every new file under the same rules.
+
+### 16.7 Build order (adds to 13.2)
+
+Step 8 becomes: the blaster and the shared `weapon.gd`, the tracer, the flash, the impact and the recoil, then the thirteen other prefabs in table order with their numbers, the projectiles and the explosion, the weapon crate, the HUD ammo block and the category slots, the switching, the crate schedule; `tests/test_weapons.gd` passing; run: pick up a shotgun crate placed by hand, fire it at the tank, see ten puffs; fire a rocket at the sandbag line, see the explosion and take self damage. Everything else in 13.2 keeps its number.
+
+### 16.8 Tests
+
+- `tests/test_weapons.gd`: for each of the fourteen weapons, from a fresh arena with a bandit 12 units in front of the camera in the open: give the weapon with full ammo, fire for 1.0 s (or one swing for melee, one shot for the launchers), and assert the bandit's damage taken is within 20 % of the table's expected value for that second (rate x damage x hit fraction, hit fraction 1.0 for cones under 1.5° at 12 units, 0.8 for the SMG, per pellet 0.7 for the shotguns, the launchers' centre damage, melee with the bandit at 1.2 units); assert the ammo counter decreased by the right amount; assert exactly one weapon mesh is visible on the player after the switch.
+- `tests/test_crates.gd`: the crate schedule of 16.4 yields every one of the thirteen weapons exactly once over the four breathers, at empty crate points only; a scripted player that walks into every crate as it appears owns fourteen weapons before wave 5 starts.
+- `tests/test_switch.gd`: the wheel cycles through the owned weapons in table order and wraps; category keys cycle inside their category; Q swaps back; no input during the 0.25 s switch fires a shot.
+- Pillar 2's zero lag test and the three facing tests run with every weapon held (the facing rule of 7.2 does not depend on the weapon).
+
+### 16.9 Definition of done and the master prompt (adds to 15)
+
+Item 2 of the definition of done adds `test_weapons`, `test_crates` and `test_switch`. A new item 8: a run watched through screenshots in which the player picks up every crate and fires every one of the fourteen weapons at least once (`docs/evidence/weapon-<name>.png`, fourteen files). The master prompt of section 15 changes one sentence: "Version 1.1 has one arena, one player, **all fourteen weapons of the kit collected from crates between waves as in section 16**, one enemy type with one behaviour, five waves, health, score, a menu with a moving camera through the built yard and a results screen; the second enemy behaviour is reserved for the on camera iteration and gets only the spawner slot described in 13.1. Do not add anything else."
