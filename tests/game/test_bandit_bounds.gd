@@ -1,9 +1,10 @@
 extends RefCounted
 ## GDD 7.4, differential: 60 simulated seconds with the player standing still at spawn (invulnerable) and all
-## five waves forced to spawn at their normal gaps (a bandit is removed once it has lived 10 s, so the waves
-## advance without the player shooting). Every physics frame, every living bandit: |X| < 18.6, |Z| < 18.6,
+## five waves forced to spawn at their normal gaps, bandits and Hazmats (GDD 19) (a bandit is removed once it has lived 10 s, so the waves
+## advance without the player shooting). Every physics frame, every living enemy: |X| < 37.6, |Z| < 37.6 (the 76 x 76 yard),
 ## -0.1 < Y < 0.6, and a sphere of radius 0.35 at its chest overlaps no world or fence collider. Each bandit
-## must also have travelled at least 8 units in its first 10 s alive: a bandit that never moves FAILS. The
+## must also have travelled at least 8 units in its first 10 s alive, or at least 3 units and reached the spot
+## where it holds and fights (a Hazmat from a near spawn point stops at 12 units): a bandit that never moves FAILS. The
 ## negative control at the end proves that clause: a bandit with speed 0 is reported as failing.
 
 const SIM_SECONDS := 60.0
@@ -22,7 +23,7 @@ func _check_frame(space: PhysicsDirectSpaceState3D, sphere: SphereShape3D) -> vo
 		if not b.alive:
 			continue
 		var pos: Vector3 = b.global_position
-		if abs(pos.x) >= 18.6 or abs(pos.z) >= 18.6 or pos.y <= -0.1 or pos.y >= 0.6:
+		if abs(pos.x) >= 37.6 or abs(pos.z) >= 37.6 or pos.y <= -0.1 or pos.y >= 0.6:
 			violations.append("%s out of bounds at %s" % [b.name, pos])
 		var q := PhysicsShapeQueryParameters3D.new()
 		q.shape = sphere
@@ -33,7 +34,7 @@ func _check_frame(space: PhysicsDirectSpaceState3D, sphere: SphereShape3D) -> vo
 			violations.append("%s inside %s at %s" % [b.name, hits[0].collider.name, pos])
 		if b.age >= 10.0 and not checked.has(b):
 			checked[b] = b.travelled
-			if b.travelled < 8.0:
+			if b.travelled < 8.0 and not (b.state == b.State.HOLD and b.travelled >= 3.0):
 				travel_fail.append("%s travelled %.1f" % [b.name, b.travelled])
 			b.take_damage(100000.0, b.global_position)
 

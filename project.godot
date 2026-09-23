@@ -115,14 +115,7 @@ anti_aliasing/quality/msaa_3d=2
 
 [xogot]
 
-project/editorState=[{
-"column": 0,
-"current": true,
-"line": 0,
-"path": "gdscript://-9223371935503612063.gd",
-"transient": true,
-"type": "file"
-}]
+project/editorState=[]
 project/shaderEditorState=[]
 project/breakpoints={}
 project/disabled_breakpoints={}

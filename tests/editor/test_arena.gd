@@ -1,6 +1,7 @@
 extends Node
 ## GDD 7.1: every child of Props and Perimeter has a StaticBody3D with at least one CollisionShape3D, the baked
-## navigation mesh has more than 200 polygons and no vertex outside |X| < 18.6, |Z| < 18.6; eleven weapon crates.
+## navigation mesh has more than 200 polygons and no vertex outside |X| < 37.6, |Z| < 37.6 (the 76 x 76 yard of
+## GDD 19); eleven weapon crates; the hazards of GDD 19; both enemy prefabs on the spawner.
 
 var arena: Node3D
 
@@ -39,7 +40,7 @@ func test_navigation_mesh_is_baked_inside_the_yard() -> Variant:
 	if nm.get_polygon_count() <= 200:
 		return "only %d polygons" % nm.get_polygon_count()
 	for v in nm.get_vertices():
-		if abs(v.x) >= 18.6 or abs(v.z) >= 18.6:
+		if abs(v.x) >= 37.6 or abs(v.z) >= 37.6:
 			return "vertex outside the yard: %s" % v
 	return true
 
@@ -64,3 +65,27 @@ func test_concept_cam_is_perspective_at_the_rig_pose() -> Variant:
 	if cc.position.distance_to(Vector3(1.4, 3.0, 12.6)) > 0.01 or abs(cc.rotation_degrees.x + 8.0) > 0.1:
 		return "ConceptCam at %s %s" % [cc.position, cc.rotation_degrees]
 	return true
+
+
+func test_hazards_are_placed() -> Variant:
+	var counts := {"GasCan": 0, "BearTrap": 0, "Landmine": 0}
+	for c in arena.get_node("Hazards").get_children():
+		for k in counts:
+			if str(c.name).begins_with(k):
+				counts[k] += 1
+	return true if counts == {"GasCan": 13, "BearTrap": 9, "Landmine": 7} else "hazards: %s" % [counts]
+
+
+func test_spawner_has_bandit_and_hazmat() -> Variant:
+	var s: Array = arena.get_node("WaveSpawner").bandit_scenes
+	if s.size() != 2:
+		return "%d prefabs" % s.size()
+	return true if s[1].resource_path == "res://scenes/actors/hazmat.tscn" else "second prefab is %s" % s[1].resource_path
+
+
+func test_perimeter_is_76_units() -> Variant:
+	var xs := []
+	for c in arena.get_node("Perimeter").get_children():
+		xs.append(max(abs(c.position.x), abs(c.position.z)))
+	xs.sort()
+	return true if abs(xs[-1] - 38.0) < 0.01 else "outermost fence at %s" % xs[-1]

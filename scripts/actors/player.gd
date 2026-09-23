@@ -22,6 +22,8 @@ const FOV := 50.0
 const AIM_FOV := 40.0
 const AIM_TIME := 0.12
 const MAX_HEALTH := 100.0
+const BURN_DPS := 10.0
+const MELEE_LEFT := {"Knife_1": "Knife1Left", "Knife_2": "Knife2Left", "Shovel": "ShovelLeft"}
 const WEAPON_MESH_NAMES := ["AK", "GrenadeLauncher", "Knife_1", "Knife_2", "Pistol", "Revolver", "Revolver_Small",
 	"RocketLauncher", "ShortCannon", "Shotgun", "Shovel", "SMG", "Sniper", "Sniper_2"]
 
@@ -64,6 +66,10 @@ var shake_amount := 0.0
 var shake_total := 0.0
 var input_override = null   # test hook: {"move": Vector2, "fire": bool, "aim": bool}
 var heartbeat_timer := 0.0
+var left_models := {}           # melee weapons are held in the left hand: the Punch clip swings the left arm
+var burn_time := 0.0
+var _burn_tick := 0.0
+var stun_time := 0.0
 var shoulder := 1.4            # the arm's sideways offset; pulled in when a wall is beside the camera
 var _arm_offset := Vector3.ZERO
 
@@ -78,9 +84,14 @@ func _ready() -> void:
 		weapons[w.weapon_id] = w
 		w.player = self
 	for m in model.find_children("*", "MeshInstance3D", true, false):
-		if m.name in WEAPON_MESH_NAMES:
+		if m.name in WEAPON_MESH_NAMES and not "LeftHand" in str(m.get_path()):
 			meshes[str(m.name)] = m
 			m.visible = false
+	for mesh_name in MELEE_LEFT:
+		var lm: Node3D = model.find_child(MELEE_LEFT[mesh_name], true, false)
+		if lm:
+			left_models[mesh_name] = lm
+			lm.visible = false
 	# the concept's red blaster: the AK's wood surface
 	if meshes.has("AK"):
 		meshes["AK"].set_surface_override_material(2, load("res://materials/blaster_red.tres"))
@@ -141,9 +152,13 @@ func switch_to(id: String) -> void:
 func _equip(id: String) -> void:
 	for m in meshes.values():
 		m.visible = false
+	for lm in left_models.values():
+		lm.visible = false
 	current = id
 	var mesh_name: String = Game.WEAPON_MESHES[id]
-	if meshes.has(mesh_name):
+	if left_models.has(mesh_name):
+		left_models[mesh_name].visible = true
+	elif meshes.has(mesh_name):
 		meshes[mesh_name].visible = true
 	weapon_changed.emit(id)
 	ammo_changed.emit()
@@ -157,7 +172,30 @@ func cycle(dir: int) -> void:
 
 
 func held_mesh() -> MeshInstance3D:
-	return meshes.get(Game.WEAPON_MESHES.get(current, ""))
+	var mesh_name: String = Game.WEAPON_MESHES.get(current, "")
+	if left_models.has(mesh_name):
+		return left_models[mesh_name].find_children("*", "MeshInstance3D", true, false)[0]
+	return meshes.get(mesh_name)
+
+
+## Weapon meshes actually on screen (right hand meshes and left hand melee models).
+func visible_weapon_count() -> int:
+	var n := 0
+	for m in model.find_children("*", "MeshInstance3D", true, false):
+		if m.name in WEAPON_MESH_NAMES and m.is_visible_in_tree():
+			n += 1
+	return n
+
+
+## Fire (GDD 19): standing in flames keeps the player burning for `seconds`; 10 damage per second.
+func ignite(seconds: float) -> void:
+	if alive and not invulnerable:
+		burn_time = max(burn_time, seconds)
+
+
+## A bear trap holds the player in place for `seconds`.
+func stun(seconds: float) -> void:
+	stun_time = max(stun_time, seconds)
 
 
 ## The barrel end of the held weapon, in world space.
@@ -228,6 +266,18 @@ func _physics_process(delta: float) -> void:
 	aiming = st.get("aim", false)
 	firing = st.get("fire", false)
 	var mv: Vector2 = st.get("move", Vector2.ZERO)
+	if stun_time > 0.0:
+		stun_time -= delta
+		mv = Vector2.ZERO
+	if burn_time > 0.0:
+		burn_time -= delta
+		_burn_tick -= delta
+		if _burn_tick <= 0.0:
+			_burn_tick = 0.5
+			take_damage(BURN_DPS * 0.5, global_position)
+	var fire_fx := get_node_or_null("Burning")
+	if fire_fx:
+		fire_fx.emitting = burn_time > 0.0 and alive
 
 	# movement relative to the camera yaw
 	var basis_y := Basis(Vector3.UP, cam_yaw)

@@ -6,13 +6,15 @@ const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 const RESULTS_SCENE := "res://scenes/ui/results.tscn"
 const SAVE_PATH := "user://save.json"
 
-## GDD section 12. `prefab` indexes WaveSpawner.bandit_scenes (0 everywhere in 1.x, section 13.1).
+## GDD section 12, with the Hazmats of GDD 19: `count` bandits plus `hazmats` Hazmats per wave, spread evenly
+## through the wave (the first one is always the wave's second spawn, so wave 1 shows him within seconds);
+## `max_alive` counts both. WaveSpawner.bandit_scenes[0] is the bandit, [1] the Hazmat.
 const WAVES := [
-	{"count": 4, "max_alive": 2, "gap": 2.5, "speed": 4.0, "range": 9.0, "burst_pause": 2.0, "prefab": 0},
-	{"count": 6, "max_alive": 3, "gap": 2.0, "speed": 4.0, "range": 9.0, "burst_pause": 2.0, "prefab": 0},
-	{"count": 8, "max_alive": 4, "gap": 1.8, "speed": 4.2, "range": 8.0, "burst_pause": 1.8, "prefab": 0},
-	{"count": 10, "max_alive": 4, "gap": 1.5, "speed": 4.4, "range": 8.0, "burst_pause": 1.6, "prefab": 0},
-	{"count": 12, "max_alive": 5, "gap": 1.2, "speed": 4.6, "range": 7.0, "burst_pause": 1.4, "prefab": 0},
+	{"count": 4, "hazmats": 1, "max_alive": 3, "gap": 2.5, "speed": 4.0, "range": 9.0, "burst_pause": 2.0},
+	{"count": 6, "hazmats": 1, "max_alive": 3, "gap": 2.0, "speed": 4.0, "range": 9.0, "burst_pause": 2.0},
+	{"count": 8, "hazmats": 1, "max_alive": 4, "gap": 1.8, "speed": 4.2, "range": 8.0, "burst_pause": 1.8},
+	{"count": 10, "hazmats": 2, "max_alive": 5, "gap": 1.5, "speed": 4.4, "range": 8.0, "burst_pause": 1.6},
+	{"count": 12, "hazmats": 3, "max_alive": 6, "gap": 1.2, "speed": 4.6, "range": 7.0, "burst_pause": 1.4},
 ]
 const BREATHER := 5.0
 

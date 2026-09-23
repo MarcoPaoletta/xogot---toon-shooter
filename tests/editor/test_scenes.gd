@@ -8,8 +8,10 @@ const SCENES := {
 		"ConceptDressing/BanditPose1", "ConceptDressing/BanditPose2", "Nav", "PlayerSpawn", "SpawnPoints", "PickupPoints",
 		"Player", "Bandits", "Pickups", "Effects", "WaveSpawner", "HUD", "WeaponCrates"]],
 	"res://scenes/actors/player.tscn": ["CharacterBody3D", "Player", ["Shape", "Model", "AimPoint", "CameraRig/Pitch/Arm/Camera",
-		"WeaponSlot", "Muzzle"]],
-	"res://scenes/actors/bandit.tscn": ["CharacterBody3D", "Bandit", ["Shape", "Model", "NavAgent", "Eyes", "Muzzle"]],
+		"WeaponSlot", "Muzzle", "Burning", "Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand/Knife1Left",
+		"Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand/Knife2Left",
+		"Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand/ShovelLeft"]],
+	"res://scenes/actors/bandit.tscn": ["CharacterBody3D", "Bandit", ["Shape", "Model", "NavAgent", "Eyes", "Muzzle", "Burning"]],
 	"res://scenes/actors/health_pickup.tscn": ["Area3D", "HealthPickup", ["Shape", "Model", "Light"]],
 	"res://scenes/actors/weapon_crate.tscn": ["Area3D", "WeaponCrate", ["Shape", "Crate", "Name", "Light"]],
 	"res://scenes/fx/tracer.tscn": ["MeshInstance3D", "Tracer", []],
@@ -24,6 +26,15 @@ const SCENES := {
 		"DamageVignette", "HitMarker", "PauseMenu/Dim", "PauseMenu/Panel/Buttons/Resume", "PauseMenu/Panel/Buttons/Restart",
 		"PauseMenu/Panel/Buttons/Menu", "PauseMenu/Panel/Buttons/Music", "PauseMenu/Panel/Buttons/Sound", "WeaponWheel"]],
 	"res://scenes/ui/weapon_wheel.tscn": ["Control", "WeaponWheel", ["Ring", "ModelsViewport/WheelScene", "Models", "Name", "Ammo", "Counter"]],
+	"res://scenes/actors/hazmat.tscn": ["CharacterBody3D", "Hazmat", ["Shape", "Model", "NavAgent", "Eyes", "Muzzle",
+		"Model/Character_Hazmat/CharacterArmature/Skeleton3D/LeftHand/HeldTank"]],
+	"res://scenes/weapons/gas_tank.tscn": ["RigidBody3D", "GasTank", ["Model", "Shape"]],
+	"res://scenes/fx/fire_patch.tscn": ["Area3D", "FirePatch", ["Shape", "Scorch", "Flames", "Light", "Crackle"]],
+	"res://scenes/fx/burning.tscn": ["GPUParticles3D", "Burning", []],
+	"res://scenes/fx/cartoon_explosion.tscn": ["Node3D", "CartoonExplosion", ["Fireball", "Smoke", "Debris", "Sparks", "Shockwave", "Flash", "Light"]],
+	"res://scenes/props/gas_can.tscn": ["StaticBody3D", "GasCan", ["Model", "Shape"]],
+	"res://scenes/props/bear_trap.tscn": ["Area3D", "BearTrap", ["Open", "Closed", "Shape"]],
+	"res://scenes/props/landmine.tscn": ["Area3D", "Landmine", ["Model", "Shape", "Light"]],
 	"res://scenes/ui/results.tscn": ["Control", "Results", ["Background", "Panel/Layout/Title", "Panel/Layout/Score",
 		"Panel/Layout/Stats", "Panel/Layout/Buttons/Retry", "Panel/Layout/Buttons/Menu"]],
 }
@@ -79,9 +90,10 @@ func test_prop_prefabs_have_collision() -> Variant:
 		if not f.ends_with(".tscn"):
 			continue
 		var inst: Node = load("res://scenes/props/" + f).instantiate()
-		var ok: bool = inst is StaticBody3D and inst.get_node_or_null("Shape") is CollisionShape3D and inst.get_node("Shape").shape != null
+		# solid props are static bodies; the bear trap and the landmine (GDD 19) are triggers you step on
+		var ok: bool = (inst is StaticBody3D or inst is Area3D) and inst.get_node_or_null("Shape") is CollisionShape3D and inst.get_node("Shape").shape != null
 		inst.free()
 		if not ok:
 			return "prop without collision: " + f
 		count += 1
-	return true if count >= 28 else "only %d prop prefabs" % count
+	return true if count >= 34 else "only %d prop prefabs" % count

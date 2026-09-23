@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://drvd1voykdhi3"]
+
+[ext_resource type="Script" uid="uid://c7oq14voq7x3n" path="res://scripts/fx/fire_patch.gd" id="1_6pnkf"]
+[ext_resource type="Material" uid="uid://dmcfkne7no1mk" path="res://materials/scorch.tres" id="2_76ha1"]
+[ext_resource type="Material" uid="uid://dbhgmqd76ekjr" path="res://fx/ground_fire_process.tres" id="3_ahemc"]
+[ext_resource type="QuadMesh" uid="uid://gj3wxa86smfh" path="res://fx/flame_quad.tres" id="4_bxmp3"]
+[ext_resource type="AudioStream" uid="uid://c0jxbj4us8ti0" path="res://assets/audio/sfx/fire_crackle.wav" id="5_vxirk"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_x8uu4"]
+radius = 2.2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_w8lpg"]
+size = Vector2(4.8, 4.8)
+
+[node name="FirePatch" type="Area3D" unique_id=1892948883]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+script = ExtResource("1_6pnkf")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=636211833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_x8uu4")
+
+[node name="Scorch" type="MeshInstance3D" parent="." unique_id=1016636272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+material_override = ExtResource("2_76ha1")
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_w8lpg")
+
+[node name="Flames" type="GPUParticles3D" parent="." unique_id=1107537866]
+cast_shadow = 0
+amount = 56
+process_material = ExtResource("3_ahemc")
+draw_pass_1 = ExtResource("4_bxmp3")
+
+[node name="Light" type="OmniLight3D" parent="." unique_id=1582031526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+light_color = Color(1, 0.54, 0.19, 1)
+light_energy = 2.4
+omni_range = 6.0
+
+[node name="Crackle" type="AudioStreamPlayer3D" parent="." unique_id=720575977]
+stream = ExtResource("5_vxirk")
+unit_size = 6.0
+bus = &"SFX"

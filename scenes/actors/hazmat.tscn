@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cypvfcti7awy8"]
+
+[ext_resource type="Script" uid="uid://o7rjv5rume15" path="res://scripts/actors/hazmat.gd" id="1_16qmc"]
+[ext_resource type="PackedScene" uid="uid://dwgqx7gbcnis6" path="res://assets/Toon Shooter Game Kit - Dec 2022/Characters/glTF/Character_Hazmat.gltf" id="2_thdky"]
+[ext_resource type="PackedScene" uid="uid://ksrscbgwaxtj" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/GasTank.gltf" id="3_thdky"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sgulm"]
+radius = 0.45
+
+[node name="Hazmat" type="CharacterBody3D" unique_id=1504628667]
+collision_layer = 4
+collision_mask = 21
+script = ExtResource("1_16qmc")
+max_health = 40.0
+weapon_mesh = ""
+fire_immune = true
+score_value = 150
+move_clip = "Run"
+hold_clip = "Idle"
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1232032556]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_sgulm")
+
+[node name="Model" type="Node3D" parent="." unique_id=1885558013]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Character_Hazmat" parent="Model" unique_id=57491633 instance=ExtResource("2_thdky")]
+
+[node name="LeftHand" type="BoneAttachment3D" parent="Model/Character_Hazmat/CharacterArmature/Skeleton3D" parent_id_path=PackedInt32Array(57491633, 578651708) index="3" unique_id=338260831]
+transform = Transform3D(-0.7116775, 0.30761763, 0.6315747, 0.25535432, -0.7242596, 0.64050186, 0.6544534, 0.6171061, 0.4368876, 0.6450571, 0.6528433, 0.11918741)
+bone_name = "Index1.L"
+bone_idx = 17
+
+[node name="HeldTank" type="Node3D" parent="Model/Character_Hazmat/CharacterArmature/Skeleton3D/LeftHand" unique_id=1799844068 instance=ExtResource("3_thdky")]
+transform = Transform3D(0.35000002, 0, 0, 0, 0.35000002, 0, 0, 0, 0.35000002, 0, 0.10000001, 0)
+
+[node name="NavAgent" type="NavigationAgent3D" parent="." unique_id=8604780]
+path_desired_distance = 0.6
+avoidance_enabled = true
+height = 2.2
+max_neighbors = 8
+max_speed = 6.0
+
+[node name="Eyes" type="RayCast3D" parent="." unique_id=894826498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+enabled = false
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=95682578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1.4, -0.4)
+
+[editable path="Model/Character_Hazmat"]

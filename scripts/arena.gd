@@ -8,7 +8,7 @@ const TRACER := preload("res://scenes/fx/tracer.tscn")
 const FLASH := preload("res://scenes/fx/muzzle_flash.tscn")
 const IMPACT := preload("res://scenes/fx/impact.tscn")
 const BURST := preload("res://scenes/fx/burst.tscn")
-const EXPLOSION := preload("res://scenes/fx/explosion.tscn")
+const EXPLOSION := preload("res://scenes/fx/cartoon_explosion.tscn")
 const HEALTH_PICKUP := preload("res://scenes/actors/health_pickup.tscn")
 
 const KILL_SCORE := 100
@@ -84,6 +84,9 @@ func _tutorial() -> void:
 	if running and spawner.wave == 1:
 		hud.message("Weapons are hidden around the yard. Hold Tab to choose one", 4.0)
 		hud.show_hint(10.0)
+	await get_tree().create_timer(5.5, false).timeout
+	if running and spawner.wave == 1:
+		hud.message("Shoot the red gas cans. Mind the traps and the mines. Stay out of the fire", 4.5)
 
 
 func _process(delta: float) -> void:
@@ -152,9 +155,9 @@ func _spawn_health_pickups() -> void:
 			p.global_position = m.global_position
 
 
-func _on_bandit_died(_b: Node) -> void:
+func _on_bandit_died(b: Node) -> void:
 	kills += 1
-	add_score(KILL_SCORE, true)
+	add_score(int(b.get("score_value")) if b.get("score_value") != null else KILL_SCORE, true)
 	hud.set_enemies(spawner.remaining())
 
 
@@ -221,6 +224,7 @@ func _set_concept_view(on: bool) -> void:
 	hud.visible = not on
 	bandits_root.visible = not on
 	$WeaponCrates.visible = not on
+	$Hazards.visible = not on
 	pickups_root.visible = not on
 	player.controls_enabled = not on
 	if on:
@@ -307,15 +311,18 @@ func hit_confirmed() -> void:
 	hud.crosshair_hit()
 
 
-## Launcher explosions (GDD 16.2): linear falloff from the centre to the edge, the player takes 50 %.
-func explode(pos: Vector3, radius: float, damage_centre: float, damage_edge: float) -> void:
-	var e: GPUParticles3D = EXPLOSION.instantiate()
+## Explosions (GDD 16.2, 19): launchers, gas cans and landmines. Damage falls linearly from the centre to the
+## edge; the player takes `player_factor` of it (0.5 for their own launchers, 1.0 for a gas can, 0 for the mine,
+## which damages the player who stepped on it directly). Gas cans inside the radius go off 0.12 s later.
+func explode(pos: Vector3, radius: float, damage_centre: float, damage_edge: float, player_factor := 0.5, size := 1.0) -> void:
+	var e: Node3D = EXPLOSION.instantiate()
 	effects.add_child(e)
-	e.setup(pos, Vector3.UP, Color("#ffb347"))
-	Audio.play("explosion", 0.06, 2.0, pos)
+	e.global_position = pos
+	e.scale = Vector3.ONE * size
+	Audio.play("explosion", 0.06, 3.0, pos)
 	if player.visible:
 		var d_player: float = player.global_position.distance_to(pos)
-		player.shake(0.25, 0.15 * clamp(1.5 - d_player / 20.0, 0.3, 1.0))
+		player.shake(0.3, 0.2 * clamp(1.5 - d_player / 20.0, 0.25, 1.0))
 	var any := false
 	for b in bandits_root.get_children():
 		if not b.alive:
@@ -325,7 +332,10 @@ func explode(pos: Vector3, radius: float, damage_centre: float, damage_edge: flo
 			b.take_damage(lerp(damage_centre, damage_edge, d / radius), pos, 1.0)
 			any = true
 	var dp: float = (player.global_position + Vector3.UP * 1.0).distance_to(pos)
-	if dp <= radius and player.alive:
-		player.take_damage(0.5 * lerp(damage_centre, damage_edge, dp / radius), pos)
+	if dp <= radius and player.alive and player_factor > 0.0:
+		player.take_damage(player_factor * lerp(damage_centre, damage_edge, dp / radius), pos)
+	for g in get_tree().get_nodes_in_group("gas_cans"):
+		if not g.exploded and g.global_position.distance_to(pos) <= radius:
+			g.detonate(0.12)
 	if any:
 		hit_confirmed()

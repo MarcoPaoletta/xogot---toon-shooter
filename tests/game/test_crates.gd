@@ -5,9 +5,9 @@ extends RefCounted
 
 const POSITIONS := {
 	"revolver": Vector3(-5.6, 0, 10.6), "revolver_small": Vector3(4.5, 0, 15.5), "smg": Vector3(-9.4, 0, 1.6),
-	"shotgun": Vector3(11, 0, 6), "short_cannon": Vector3(15.5, 0, 9.5), "sniper": Vector3(-9.5, 0, -16),
-	"sniper_2": Vector3(-15.6, 0, 12), "grenade_launcher": Vector3(-2, 0, -12), "rocket_launcher": Vector3(13, 0, -6),
-	"knife_2": Vector3(8, 0, -13), "shovel": Vector3(1.5, 0, 13.2),
+	"shotgun": Vector3(11, 0, 6), "short_cannon": Vector3(30, 0, 17.5), "sniper": Vector3(-31, 0, -18),
+	"sniper_2": Vector3(-33, 0, 17), "grenade_launcher": Vector3(2, 0, -33), "rocket_launcher": Vector3(33, 0, -13),
+	"knife_2": Vector3(17, 0, -24), "shovel": Vector3(-8.5, 0, 25),
 }
 
 var tree: SceneTree

@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://bnhq6px6yk165" path="res://scripts/actors/player.gd" id="1_0878f"]
 [ext_resource type="PackedScene" uid="uid://c6qdawi0dcuwg" path="res://assets/Toon Shooter Game Kit - Dec 2022/Characters/glTF/Character_Soldier.gltf" id="2_dferu"]
 [ext_resource type="PackedScene" uid="uid://dja55kp4atcoo" path="res://scenes/weapons/blaster.tscn" id="3_t62v4"]
+[ext_resource type="PackedScene" uid="uid://daseoctccrkho" path="res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/Knife_1.gltf" id="3_uqfkb"]
+[ext_resource type="PackedScene" uid="uid://cyyq7fchcv6xt" path="res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/Knife_2.gltf" id="4_642so"]
 [ext_resource type="PackedScene" uid="uid://dghd7ikstjajd" path="res://scenes/weapons/pistol.tscn" id="4_uqfkb"]
 [ext_resource type="PackedScene" uid="uid://bvr54xceds0ed" path="res://scenes/weapons/revolver.tscn" id="5_642so"]
+[ext_resource type="PackedScene" uid="uid://b43dn5nrjckke" path="res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/Shovel.gltf" id="5_afsss"]
 [ext_resource type="PackedScene" uid="uid://cbh7845l502j5" path="res://scenes/weapons/revolver_small.tscn" id="6_afsss"]
 [ext_resource type="PackedScene" uid="uid://d1xweyb2hrq0d" path="res://scenes/weapons/smg.tscn" id="7_6a6mx"]
 [ext_resource type="PackedScene" uid="uid://b73dy21ghepab" path="res://scenes/weapons/shotgun.tscn" id="8_j3wsw"]
@@ -16,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cjrx1w3exc6ed" path="res://scenes/weapons/knife_1.tscn" id="14_f6erl"]
 [ext_resource type="PackedScene" uid="uid://ccpwyh5x5p5pp" path="res://scenes/weapons/knife_2.tscn" id="15_k7i36"]
 [ext_resource type="PackedScene" uid="uid://b8w2eg8o3gi75" path="res://scenes/weapons/shovel.tscn" id="16_366ld"]
+[ext_resource type="PackedScene" uid="uid://begwh54nvwmnl" path="res://scenes/fx/burning.tscn" id="20_642so"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8pjo5"]
 radius = 0.45
@@ -33,6 +37,72 @@ shape = SubResource("CapsuleShape3D_8pjo5")
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="Character_Soldier" parent="Model" unique_id=1239238692 instance=ExtResource("2_dferu")]
+
+[node name="Skeleton3D" parent="Model/Character_Soldier/CharacterArmature" parent_id_path=PackedInt32Array(1239238692, 1006022639) index="0" unique_id=182681371]
+bones/1/position = Vector3(0.1894142, 0.7178655, -0.5299148)
+bones/1/rotation = Quaternion(1.008731e-05, -0.040763438, 0.9991689, 3.750566e-06)
+bones/2/position = Vector3(0.0021530248, 0.88245046, 0.068480834)
+bones/2/rotation = Quaternion(0.13843977, 1.1806143e-07, 8.2517026e-08, 0.99037087)
+bones/4/rotation = Quaternion(0.037516594, 4.4204356e-07, 2.0754452e-08, 0.999296)
+bones/5/rotation = Quaternion(0.0065398295, -0.077113375, 0.050013892, 0.99574566)
+bones/6/rotation = Quaternion(-0.04276179, 2.5707786e-05, 0.00013955706, 0.9990853)
+bones/7/rotation = Quaternion(-0.054140642, -0.00059702975, -0.00096814864, 0.9985328)
+bones/8/position = Vector3(0.0906, 0.18180451, 0.0068757697)
+bones/8/rotation = Quaternion(-0.042711426, -0.011201958, -0.2534777, 0.9663329)
+bones/9/rotation = Quaternion(0.59691393, 0.5018601, 0.6258968, -0.009138539)
+bones/10/rotation = Quaternion(-0.0631302, 0.07138596, -0.6214983, 0.77759796)
+bones/12/rotation = Quaternion(-0.34462214, -0.047058325, -0.23873384, 0.9066572)
+bones/13/rotation = Quaternion(-0.62588346, 0.05437534, 0.06589251, 0.77522343)
+bones/15/rotation = Quaternion(-0.49731296, 0.04530128, -0.1355455, 0.855719)
+bones/16/rotation = Quaternion(-0.5289637, 0.023663366, -0.054076277, 0.84658915)
+bones/18/rotation = Quaternion(-0.3651356, 0.100176044, -0.045850284, 0.92441255)
+bones/19/rotation = Quaternion(-0.6348739, -0.03503995, -0.089888, 0.76656866)
+bones/21/rotation = Quaternion(-0.68033224, 0.18977046, 0.25318947, 0.66108274)
+bones/22/position = Vector3(-0.09048968, 0.1821124, 0.006782417)
+bones/22/rotation = Quaternion(-0.042711277, 0.011202575, 0.25347763, 0.9663329)
+bones/23/rotation = Quaternion(0.02396267, -0.74139667, -0.6669472, -0.07027307)
+bones/24/rotation = Quaternion(-0.027915023, 0.38403624, 0.116556905, 0.91550606)
+bones/36/position = Vector3(0.17701507, 0.07240475, -0.10135384)
+bones/36/rotation = Quaternion(0.98543537, 0.00068964623, 0.008130303, 0.169855)
+bones/37/rotation = Quaternion(0.7715181, 0.00952479, 0.009136093, 0.63607043)
+bones/38/position = Vector3(-0.17869811, 0.07240475, -0.10135411)
+bones/38/rotation = Quaternion(0.6752651, -0.010274813, -0.0031154032, 0.737497)
+bones/39/rotation = Quaternion(0.6155782, -0.0073218695, -0.010980898, 0.7879653)
+bones/40/position = Vector3(0.18598029, -0.36924475, 0.69734573)
+bones/40/rotation = Quaternion(0.32988796, 1.12536014e-07, 1.9662852e-07, 0.9440201)
+bones/41/position = Vector3(-0.18678962, 0.36885902, 0.34765705)
+bones/41/rotation = Quaternion(-7.637009e-06, 0.93291056, 0.36010805, -9.660478e-06)
+bones/42/position = Vector3(-0.18335825, 0.8704397, 1.1539587)
+bones/42/rotation = Quaternion(-3.552734e-15, -5.9604645e-07, 3.3881257e-21, 1)
+
+[node name="Head_2" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D" index="0" unique_id=435115341]
+transform = Transform3D(0.98303837, -0.06757788, -0.17049551, 0.055369116, 0.9956167, -0.07537849, 0.174842, 0.064659774, 0.98247117, -0.04691607, 1.638429, 0.12746978)
+
+[node name="UpperArm_L" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D" index="1" unique_id=808246388]
+transform = Transform3D(-0.14097652, 0.2475483, 0.9585644, 0.5074908, -0.8132769, 0.28466472, 0.85004663, 0.52659345, -0.010975495, 0.12618747, 1.4814967, 0.117618695)
+
+[node name="Index1_R" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D" index="2" unique_id=1250018160]
+transform = Transform3D(-0.28633377, -0.093385726, -0.953568, -0.88774097, 0.4002758, 0.22736736, 0.36045712, 0.9116243, -0.19751462, -0.37606645, 1.39847, 0.85951746)
+
+[node name="UpperArm_R" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D" index="3" unique_id=213513749]
+transform = Transform3D(-0.8155189, -0.32504556, -0.47882617, -0.45331988, -0.15554968, 0.8776708, -0.35976404, 0.9328184, -0.02049587, -0.18726003, 1.463595, 0.062167585)
+
+[node name="LeftHand" type="BoneAttachment3D" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D" index="5" unique_id=30976426]
+transform = Transform3D(-0.14879206, -0.28723884, 0.94623184, 0.7220228, 0.62226826, 0.30243203, -0.6756801, 0.7282007, 0.114804484, 0.107848436, 1.2779622, 0.7318399)
+bone_name = "Index1.L"
+bone_idx = 17
+
+[node name="Knife1Left" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand" unique_id=1363875016 instance=ExtResource("3_uqfkb")]
+transform = Transform3D(0.33860332, 0.9407778, 0.016902246, 0.9334267, -0.33811304, 0.119972154, 0.11858185, -0.024846002, -0.9926334, 0.43726534, 0.1418706, 0.04235655)
+visible = false
+
+[node name="Knife2Left" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand" unique_id=1830757731 instance=ExtResource("4_642so")]
+transform = Transform3D(0.4069759, 0.91330206, -0.015842311, 0.90597755, -0.40137848, 0.13453451, 0.11651179, -0.06910509, -0.99078226, 0.4602127, 0.13073342, 0.04943186)
+visible = false
+
+[node name="ShovelLeft" parent="Model/Character_Soldier/CharacterArmature/Skeleton3D/LeftHand" unique_id=1721409004 instance=ExtResource("5_afsss")]
+transform = Transform3D(0.4120964, 0.91099834, -0.016112512, 0.90379417, -0.4064687, 0.13393755, 0.11546754, -0.06975755, -0.990859, 0.5112864, 0.1098368, 0.031721234)
+visible = false
 
 [node name="AimPoint" type="Marker3D" parent="." unique_id=469274202]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -84,3 +154,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.3, -0.8)
 [node name="Knife2" parent="WeaponSlot" unique_id=1427850765 instance=ExtResource("15_k7i36")]
 
 [node name="Shovel" parent="WeaponSlot" unique_id=142708918 instance=ExtResource("16_366ld")]
+
+[node name="Burning" parent="." unique_id=447950070 instance=ExtResource("20_642so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[editable path="Model/Character_Soldier"]

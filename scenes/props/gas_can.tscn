@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cotu4bj3bj3ri"]
+
+[ext_resource type="Script" uid="uid://dbuxq5hqfa5sm" path="res://scripts/props/gas_can.gd" id="1_4atn8"]
+[ext_resource type="PackedScene" uid="uid://5vhpigou37lc" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/GasCan.gltf" id="2_h6agg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_71lom"]
+size = Vector3(0.8, 1.05, 0.4)
+
+[node name="GasCan" type="StaticBody3D" unique_id=1348166897]
+script = ExtResource("1_4atn8")
+
+[node name="Model" parent="." unique_id=1818795086 instance=ExtResource("2_h6agg")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=205949488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, 0)
+shape = SubResource("BoxShape3D_71lom")

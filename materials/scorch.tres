@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dmcfkne7no1mk"]
+
+[ext_resource type="Shader" uid="uid://b5ee8c0dma8f8" path="res://shaders/scorch.gdshader" id="1_mna2a"]
+[ext_resource type="Texture2D" uid="uid://dgicbcumjeb6w" path="res://fx/flame_noise.tres" id="2_45utf"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mna2a")
+shader_parameter/noise_tex = ExtResource("2_45utf")
+shader_parameter/fade = 1.0

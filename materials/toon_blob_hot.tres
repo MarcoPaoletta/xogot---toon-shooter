@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cx26lghvqnmxu"]
+
+[ext_resource type="Shader" uid="uid://od2fbkfkeugx" path="res://shaders/toon_blob.gdshader" id="1_nun5g"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nun5g")
+shader_parameter/rim_width = 0.36
+shader_parameter/rim_dark = 0.55
+shader_parameter/core_width = 0.78
+shader_parameter/heat = 1.0
+shader_parameter/boost = 1.35

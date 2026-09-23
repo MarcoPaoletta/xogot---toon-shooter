@@ -365,6 +365,42 @@ def make_sfx():
         mix(u, [math.sin(TAU * f * i / SR) * math.exp(-i / (0.012 * SR)) for i in range(int(0.09 * SR))], 0, 0.5)
         mix(u, thump(150, 0.06, 0.012), 0, 0.4)
         out[name] = normalize(u, 0.6 if name == "ui_click" else 0.35)
+
+    # GDD 19: the Hazmat's throw, the gas tank bursting into flames, the fire crackle, the bear trap, the mine
+    out["throw"] = swish(rng, 0.3, 400, 2600)
+    tb = zeros(0.8)
+    mix(tb, [math.sin(TAU * 1480 * i / SR) * math.exp(-i / (0.05 * SR)) for i in range(int(0.3 * SR))], 0, 0.4)
+    mix(tb, thump(90, 0.3, 0.07), 0, 0.9)
+    mix(tb, click(rng, 0.004, 0.9))
+    whoosh = apply(lowpass_sweep(noise(0.7, rng), 600, 3200), [min(1.0, i / (0.04 * SR)) * math.exp(-i / (0.25 * SR)) for i in range(int(0.7 * SR))])
+    mix(tb, whoosh, 0.03, 0.8)
+    out["tank_burst"] = normalize(reverb(tb, 0.25), 0.9)
+    fc = zeros(2.0)
+    mix(fc, apply(lowpass(noise(2.0, rng), 700), [0.35] * int(2.0 * SR)), 0, 0.5)
+    for k in range(60):
+        at = rng.random() * 1.95
+        pop = apply(highpass(noise(0.012, rng), 1800), env_exp(int(0.012 * SR), 0.0004, 0.003))
+        mix(fc, pop, at, rng.uniform(0.25, 0.8))
+    mix(fc, thump(70, 0.15, 0.05), 0, 0.3)
+    mix(fc, click(rng, 0.003, 0.6))
+    L = len(fc)
+    n = int(0.05 * SR)
+    for i in range(n):
+        w = i / n
+        fc[L - n + i] = fc[L - n + i] * (1 - w) + fc[i] * w
+    out["fire_crackle"] = normalize(fc, 0.7)
+    ts = zeros(0.45)
+    mix(ts, click(rng, 0.004, 1.0))
+    for f, g in ((980, 0.5), (2150, 0.35), (3400, 0.25)):
+        mix(ts, [math.sin(TAU * f * i / SR) * math.exp(-i / (0.09 * SR)) for i in range(int(0.45 * SR))], 0.002, g)
+    mix(ts, thump(120, 0.2, 0.04), 0, 0.8)
+    mix(ts, click(rng, 0.003, 0.7), 0.035)
+    out["trap_snap"] = normalize(ts, 0.9)
+    mb = zeros(0.2)
+    mix(mb, [math.sin(TAU * 2200 * i / SR) * (1 if i < 0.12 * SR else 0) * math.exp(-i / (0.3 * SR)) for i in range(int(0.2 * SR))], 0, 0.6)
+    mix(mb, click(rng, 0.002, 0.5))
+    mix(mb, thump(160, 0.1, 0.02), 0, 0.4)
+    out["mine_beep"] = normalize(mb, 0.7)
     return out
 
 

@@ -15,10 +15,17 @@ const CONE_VERTICAL := 0.5  # vertical: shots at the belt never lob over chest h
 const DAMAGE := 6.0
 const GRAVITY := 24.0
 
+const BURN_DPS := 10.0
+
 @export var max_health := 30.0
+@export var weapon_mesh := "Pistol"      # the one weapon mesh left visible ("" hides them all)
+@export var fire_immune := false
+@export var score_value := 100
+@export var move_clip := "Run_Shoot"
+@export var hold_clip := "Idle_Shoot"
 
 @onready var model: Node3D = $Model
-@onready var anim: AnimationPlayer = $Model/Character_Enemy/AnimationPlayer
+@onready var anim: AnimationPlayer = $Model.find_children("*", "AnimationPlayer", true, false)[0]
 @onready var nav: NavigationAgent3D = $NavAgent
 @onready var eyes: RayCast3D = $Eyes
 @onready var muzzle: Marker3D = $Muzzle
@@ -41,6 +48,8 @@ var _knock := Vector3.ZERO
 var _stagger := 0.0
 var _hit_anim := 0.0
 var _safe_velocity := Vector3.ZERO
+var burn_time := 0.0
+var _burn_tick := 0.0
 
 
 func _ready() -> void:
@@ -48,12 +57,12 @@ func _ready() -> void:
 	health = max_health
 	for m in model.find_children("*", "MeshInstance3D", true, false):
 		if m.name in WEAPON_MESH_NAMES:
-			m.visible = m.name == "Pistol"
+			m.visible = m.name == weapon_mesh
 	for clip in ["Run_Shoot", "Idle_Shoot", "Run", "Idle"]:
 		if anim.has_animation(clip):
 			anim.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	nav.velocity_computed.connect(func(v): _safe_velocity = v)
-	anim.play("Run_Shoot")
+	anim.play(move_clip)
 	model.scale = Vector3.ONE * 0.01
 	var t := create_tween()
 	t.tween_property(model, "scale", Vector3.ONE, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -121,15 +130,7 @@ func _physics_process(delta: float) -> void:
 				else:
 					_los_lost = 0.0
 				_face(to, delta, deg_to_rad(360.0))
-				_burst_timer -= delta
-				if _burst_timer <= 0.0 and los and player_alive:
-					if _burst_left > 0:
-						_shoot()
-						_burst_left -= 1
-						_burst_timer = 0.15
-					else:
-						_burst_left = 3
-						_burst_timer = burst_pause
+				_attack_tick(delta, los, player_alive)
 	nav.velocity = want
 	var hv := _safe_velocity if nav.avoidance_enabled else want
 	if want == Vector3.ZERO:
@@ -146,9 +147,41 @@ func _physics_process(delta: float) -> void:
 	if state == State.ADVANCE and hv.length() > 0.3:
 		_face(hv, delta, deg_to_rad(720.0))
 	if _hit_anim <= 0.0:
-		var clip := "Idle_Shoot" if state == State.HOLD else "Run_Shoot"
+		var clip := hold_clip if state == State.HOLD else move_clip
 		if anim.current_animation != clip:
 			anim.play(clip, 0.1)
+	_burn(delta)
+
+
+## The attack while holding position; the bandit fires bursts of three. The Hazmat overrides this.
+func _attack_tick(delta: float, los: bool, player_alive: bool) -> void:
+	_burst_timer -= delta
+	if _burst_timer <= 0.0 and los and player_alive:
+		if _burst_left > 0:
+			_shoot()
+			_burst_left -= 1
+			_burst_timer = 0.15
+		else:
+			_burst_left = 3
+			_burst_timer = burst_pause
+
+
+## Fire (GDD 19): standing in flames keeps a character burning; 10 damage per second.
+func ignite(seconds: float) -> void:
+	if alive and not fire_immune:
+		burn_time = max(burn_time, seconds)
+
+
+func _burn(delta: float) -> void:
+	var fx := get_node_or_null("Burning")
+	if burn_time > 0.0:
+		burn_time -= delta
+		_burn_tick -= delta
+		if _burn_tick <= 0.0:
+			_burn_tick = 0.5
+			take_damage(BURN_DPS * 0.5, global_position)
+	if fx:
+		fx.emitting = burn_time > 0.0 and alive
 
 
 func _face(dir: Vector3, delta: float, turn: float) -> void:
@@ -178,6 +211,8 @@ func _shoot() -> void:
 	Audio.play("bandit_pistol", 0.08, -3.0, origin)
 	if hit_player:
 		player.take_damage(DAMAGE, global_position)
+	elif hit and hit.collider.has_method("hit"):
+		hit.collider.hit(DAMAGE, global_position)
 
 
 func take_damage(amount: float, from: Vector3, knock_units := 0.0, stagger_time := 0.0) -> void:
@@ -207,6 +242,10 @@ func knock(from: Vector3, units: float) -> void:
 
 func _die() -> void:
 	alive = false
+	burn_time = 0.0
+	var fx := get_node_or_null("Burning")
+	if fx:
+		fx.emitting = false
 	state = State.DEAD
 	shape.set_deferred("disabled", true)
 	collision_layer = 0

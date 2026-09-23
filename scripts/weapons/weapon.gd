@@ -162,6 +162,8 @@ func _fire_hitscan() -> void:
 		if is_bandit:
 			hits[body] = hits.get(body, 0) + 1
 			body.take_damage(damage, player.global_position, 0.0, stagger)
+		elif body != null and body.has_method("hit"):
+			body.hit(damage, player.global_position)
 	for b in hits:
 		if knockback > 0.0 and hits[b] >= knockback_min_pellets and is_instance_valid(b):
 			b.knock(player.global_position, knockback)
@@ -209,6 +211,11 @@ func _melee_contact() -> void:
 		return
 	var fwd: Vector3 = -player.global_basis.z
 	var hit_any := false
+	for g in get_tree().get_nodes_in_group("gas_cans"):
+		var tg: Vector3 = g.global_position - player.global_position
+		tg.y = 0.0
+		if tg.length() <= reach + 0.3 and (tg.length() < 0.2 or rad_to_deg(fwd.angle_to(tg.normalized())) <= arc * 0.5):
+			g.hit(damage, player.global_position)
 	for b in arena.get_node("Bandits").get_children():
 		if not b.alive:
 			continue

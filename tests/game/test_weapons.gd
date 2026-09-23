@@ -51,11 +51,7 @@ func _face(pos: Vector3) -> void:
 
 
 func _visible_weapon_meshes() -> int:
-	var n := 0
-	for m in p.meshes.values():
-		if m.visible:
-			n += 1
-	return n
+	return p.visible_weapon_count()
 
 
 func _run():

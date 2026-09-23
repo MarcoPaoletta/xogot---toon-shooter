@@ -1,7 +1,7 @@
 extends Node
 ## Five waves from Game.WAVES (GDD 12): spawn gap, max alive, seeded spawn point choice outside the camera's
-## view cone (GDD 7.4), 5 s breathers. `bandit_scenes` has one entry in 1.x; the second enemy behaviour of
-## the on camera iteration is a second entry and a `prefab` index in the wave table.
+## view cone (GDD 7.4), 5 s breathers. `bandit_scenes`: [0] the bandit, [1] the Hazmat (GDD 19); each wave's
+## spawn order is planned when it begins, with its Hazmats spread evenly through it.
 
 signal wave_started(n: int)
 signal wave_cleared(n: int)
@@ -23,6 +23,9 @@ var spawn_parent: Node3D
 var spawn_points: Array = []
 var player: Node3D
 var camera: Camera3D
+var _order: Array = []
+@export var view_distance := 40.0      # beyond this a spawn point counts as out of view
+@export var min_player_distance := 12.0
 
 
 func setup(parent: Node3D, points: Array, target: Node3D, cam: Camera3D) -> void:
@@ -49,10 +52,15 @@ func params() -> Dictionary:
 	return Game.WAVES[clamp(wave - 1, 0, total_waves() - 1)]
 
 
+func wave_total() -> int:
+	var p := params()
+	return int(p["count"]) + int(p.get("hazmats", 0))
+
+
 func remaining() -> int:
 	if wave == 0:
 		return 0
-	return int(params()["count"]) - spawned + alive
+	return wave_total() - spawned + alive
 
 
 func _begin_wave(n: int) -> void:
@@ -62,6 +70,16 @@ func _begin_wave(n: int) -> void:
 	in_breather = false
 	_rng.seed = 4000 + n
 	_gap_timer = 0.5
+	var p := params()
+	var total := wave_total()
+	var hz := int(p.get("hazmats", 0))
+	_order.clear()
+	for i in total:
+		_order.append(0)
+	# the first Hazmat is the second spawn; the others are spread over the rest of the wave
+	for k in hz:
+		var at := 1 if k == 0 else int(round(1.0 + float(k) * (total - 1) / float(hz)))
+		_order[clamp(at, 0, total - 1)] = 1
 	wave_started.emit(n)
 
 
@@ -75,7 +93,7 @@ func _process(delta: float) -> void:
 		return
 	var p := params()
 	_gap_timer -= delta
-	if spawned < int(p["count"]) and alive < int(p["max_alive"]) and _gap_timer <= 0.0:
+	if spawned < wave_total() and alive < int(p["max_alive"]) and _gap_timer <= 0.0:
 		_spawn(p)
 		_gap_timer = float(p["gap"])
 
@@ -94,18 +112,23 @@ func pick_point() -> Vector3:
 		if d_player > far_d:
 			far_d = d_player
 			far_pt = pt
-		var out_of_view: bool = fwd.dot(to.normalized()) < 0.3 or to.length() > 26.0
-		if out_of_view and d_player >= 12.0:
+		var out_of_view: bool = fwd.dot(to.normalized()) < 0.3 or to.length() > view_distance
+		if out_of_view and d_player >= min_player_distance:
 			ok.append(pt)
 	if ok.is_empty():
 		return far_pt
+	# wave 1 shows the game within seconds: its enemies come from the nearest point out of view
+	if wave == 1:
+		ok.sort_custom(func(x, y): return x.distance_to(player.global_position) < y.distance_to(player.global_position))
+		return ok[_rng.randi_range(0, min(1, ok.size() - 1))]
 	return ok[_rng.randi_range(0, ok.size() - 1)]
 
 
 func _spawn(p: Dictionary) -> void:
-	var scene: PackedScene = bandit_scenes[int(p.get("prefab", 0))]
+	var kind: int = _order[spawned] if spawned < _order.size() else 0
+	var scene: PackedScene = bandit_scenes[min(kind, bandit_scenes.size() - 1)]
 	var b: Node3D = scene.instantiate()
-	b.name = "Bandit%d_%d" % [wave, spawned + 1]
+	b.name = ("Hazmat%d_%d" if kind == 1 else "Bandit%d_%d") % [wave, spawned + 1]
 	b.setup(p, player)
 	spawn_parent.add_child(b)
 	b.global_position = pick_point()
@@ -118,7 +141,7 @@ func _spawn(p: Dictionary) -> void:
 func _on_bandit_died(b: Node) -> void:
 	alive -= 1
 	bandit_died.emit(b)
-	if spawned >= int(params()["count"]) and alive <= 0:
+	if spawned >= wave_total() and alive <= 0:
 		wave_cleared.emit(wave)
 		if wave >= total_waves():
 			running = false

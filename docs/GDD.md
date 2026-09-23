@@ -5,8 +5,8 @@
 **Engine stamp:** `config/features = ["4.7", "Mobile"]` (Xogot 1.7.2 / Godot 4.7.2). Never upgraded by the build.
 **Art:** Quaternius *Toon Shooter Game Kit* (Dec 2022), CC0, imported at `res://assets/Toon Shooter Game Kit - Dec 2022/` (the pack's own folder name, structure untouched). Every model, with its measured size, is listed in `docs/asset-inventory.md`.
 **Concept image:** `docs/concept/concept.png` (1600 x 893). It is the acceptance test for the look, see section 1.
-**Document version:** 1.3, 2026-09-23 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16; 1.2 three starting weapons, eleven unlocks in the yard and the weapon wheel, section 17; 1.3 implementation notes after the build, section 18).
-**Status:** Built. Sections 0 to 17 are the specification as it was written before the build (when the project contained the pack, this document and nothing else); section 18 records where the shipped game deviates and why.
+**Document version:** 2.0, 2026-09-23 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16; 1.2 three starting weapons, eleven unlocks in the yard and the weapon wheel, section 17; 1.3 implementation notes after the build, section 18; 2.0 a 76 x 76 yard, the Hazmat and fire, bear traps, landmines, gas cans, melee in the left hand, section 19).
+**Status:** Built. Sections 0 to 17 are the specification as it was written before the build (when the project contained the pack, this document and nothing else); section 18 records where the shipped game deviates and why; section 19 is the second version.
 
 ---
 
@@ -700,3 +700,72 @@ The bandit's spread is **elliptical**: 5° side to side, 0.5° up and down, inst
 
 ### 18.9 Playtest notes
 A scripted player that only stands at the spawn, aims at the nearest visible bandit and holds fire clears the five waves in about 1:45 of game time (40 kills, 8 250 points with the survival bonus); the same player without invulnerability is overrun in wave 1 in about 17 s when it never uses cover, which is the design (pillar 3). The wave table of section 12 is unchanged.
+
+## 19. Version 2.0: a bigger yard, the Hazmat and his fire, hazards, melee in the left hand (supersedes where stated)
+
+**Why.** After playing the 1.3 build the yard felt small, the melee weapons swung the wrong arm, and the yard needed things to react to besides bandits. This version was decided with Marco after the first build; it uses the enemy behaviour that 13.1 had reserved (the Hazmat), and adds hazards that 13.1 had cut (bear traps, landmines, exploding gas cans).
+
+### 19.1 The yard is 76 x 76 (supersedes the perimeter, spawn points and bounds of 7.1, 7.4 and 18.2)
+- The fence is at |X|, |Z| = 38: twenty `Barrier_Large` panels per side (centres -36.1 to 36.1 in steps of 3.8), `Barrier_Fixed` corners at (±37.2, ±37.2) turned 45°, the two gates (`Barrier_Single` plus their invisible block on layer 5) at (-9.5, 0, -38) and (38, 0, -5.7). Twice as wide, four times the area. The ground plane is 220 x 220.
+- **The concept region is untouched**: `ConceptCam`, the stack, the tank, the tower and the fences of 18.2 are where they were, and `comparison-05.png` still reads as the concept.
+- The old outside ring (14 trees and 4 street lights between 22 and 30 units) now stands inside the yard and belongs to `Props`, so the navigation bake treats it as obstacles. A new ring of 22 trees and 4 street lights stands outside the new fence, 44 to 54 units out.
+- The outer ring of the yard is authored by hand in clusters, one per sector, checked for overlaps before placing: `Structure_2` (north west), `Structure_4` (north east), `Structure_1` (south east), `Structure_3` (south west) with trimesh collision; container stacks north, south, east and west (long, small, stacked; blue, red, yellow); a second `Debris_BrokenCar` north and a third south; a second `Tank` west; sandbag lines and nests; crate stacks; `WaterTank_Floor` lying north and south east; `TrashContainer` north east and south west; tires, barrels, pallets, cones, cardboard boxes; single trees. 147 props in all (`docs/evidence/yard-top-v2.png`).
+- **Trees fade near the camera:** every tree material dithers out between 6 and 2.5 units from the camera (distance fade, pixel dither), so a canopy between the camera and the player never fills the frame.
+- Spawn points (8), inside the new fence: `SpawnN1` (-10, 0, -36), `SpawnN2` (18, 0, -36), `SpawnE1` (35.5, 0, -14.5), `SpawnE2` (35.5, 0, 24), `SpawnS1` (-18, 0, 35.5), `SpawnS2` (14, 0, 35.5), `SpawnW1` (-35.5, 0, -24), `SpawnW2` (-35.5, 0, 9). The view rule of 7.4 counts a point farther than 40 units (was 26) as out of view.
+- Four **near spawn points** about 18 units out, beside and behind the start camera: `SpawnNearE` (19, 0, 3), `SpawnNearW` (-19, 0, 2), `SpawnNearSW` (-12, 0, 20), `SpawnNearSE` (16, 0, 20). In wave 1 every enemy comes from one of the two nearest points out of view (19.9); later waves pick among all twelve.
+- Health pickups at five points: `PickupA` (-6, 0, 9), `PickupB` (9, 0, -10), `PickupC` (-24, 0, 14), `PickupD` (23, 0, -15), `PickupE` (-3.5, 0, -25).
+- The stronger weapons moved outward (supersedes those rows of 17.1 and 18.6): `CrateSniper` (-31, 0, -18), `CrateSniper2` (-33, 0, 17), `CrateGrenadeLauncher` (2, 0, -33), `CrateRocketLauncher` (33, 0, -13), `CrateKnife2` (17, 0, -24), `CrateShovel` (-8.5, 0, 25), `CrateShortCannon` (30, 0, 17.5). The revolvers, the SMG and the shotgun stay near the spawn.
+- The navigation mesh is baked inside |X|, |Z| < 37.6 (958 polygons). The bounds test (7.4) uses 37.6.
+- The menu camera orbits at radius 44 and height 15 so the whole yard shows.
+
+### 19.2 Melee weapons in the left hand (supersedes the melee meshes of 16.2)
+The `Punch` clip swings the left arm, and the kit's knife and shovel meshes hang from the right hand. The player scene has a `BoneAttachment3D` named `LeftHand` on the bone `Index1.L` holding `Knife1Left`, `Knife2Left` and `ShovelLeft`: the loose `Guns/glTF` models (the same mesh data as the ones in the character), placed as the mirror image of the right hand grip across the character's middle plane. Holding a knife or the shovel shows the left hand model and hides the right hand mesh; every other weapon stays in the right hand.
+
+### 19.3 The Hazmat (the second enemy behaviour of 13.1)
+- `res://scenes/actors/hazmat.tscn`, root `Hazmat` (`CharacterBody3D`), `Character_Hazmat`, script `hazmat.gd`, which extends `bandit.gd`. 40 health, 150 points, runs at 0.85 of the wave's bandit speed, no gun: a `GasTank` model scaled to 0.35 sits in his left hand (`LeftHand/HeldTank`).
+- **Behaviour:** advances on the navigation mesh like a bandit, holds at 12 units with line of sight, and every 3.2 s plays `Punch`; at 0.32 of the clip (the left arm fully forward) the held tank disappears (it comes back 1.2 s later) and a thrown gas tank leaves his hand. The throw is solved ballistically (13 u/s, gravity 20) to land where the player will be: the player's position plus their velocity times the estimated flight time.
+- **The thrown tank** (`res://scenes/weapons/gas_tank.tscn`, `RigidBody3D`): its first contact with anything (ground, prop, the player) bursts it into a fire patch on the ground below the burst point; a direct hit on the player also deals 8.
+- **Immune to fire** (the suit).
+- **Waves** (supersedes the table of 12): bandits plus Hazmats per wave; the first Hazmat of every wave is its second spawn and the others are spread over the rest of it; `max_alive` counts both:
+
+| Wave | Bandits | Hazmats | Max alive |
+|---|---|---|---|
+| 1 | 4 | 1 | 3 |
+| 2 | 6 | 1 | 3 |
+| 3 | 8 | 1 | 4 |
+| 4 | 10 | 2 | 5 |
+| 5 | 12 | 3 | 6 |
+
+### 19.4 Fire
+- **The fire patch** (`res://scenes/fx/fire_patch.tscn`, `Area3D`, radius 2.2): 56 flame particles rising from a disc of radius 2, a scorched ground disc with flickering embers (`scorch.gdshader`), a flickering orange light and a looping crackle. It burns for **10 s**, then fades over 1 s and disappears.
+- **Burning:** anyone standing in the patch (the player, bandits) burns while inside and for 1.5 s after leaving: **10 damage per second**, applied as 5 every 0.5 s. A burning character shows flames on its body (`res://scenes/fx/burning.tscn`, a `Burning` node in the player and the bandit). Hazmats are immune.
+- **The flame look** (`flame.gdshader`): camera facing quads; a teardrop shape broken up by scrolling noise and cut into three flat bands (red edge, orange body, yellow core), matching the flat low poly art.
+
+### 19.5 Hazards (supersedes those lines of the 13.1 cut list)
+All under `Arena/Hazards`, placed by hand near cover and paths, plus one of each in the lane ahead of the spawn (19.9). The `Hazards` node hides while F1 shows the concept view:
+- **Bear traps** (9, `res://scenes/props/bear_trap.tscn`, `BearTrap_Open` and `BearTrap_Closed`): the player steps in, the open model is replaced by the closed one with a snap (squash 0.18 s), **20 damage**, the player is held in place for 0.8 s. The trap opens again 15 s later, once nobody stands on it. Bandits do not trigger them.
+- **Landmines** (7, `res://scenes/props/landmine.tscn`, `Landmine`, a red light blinking every 1.2 s): the player steps on one, it beeps, and 0.15 s later explodes: **30 damage** to the player who stepped on it, and the cartoon explosion hurts any enemy within 3.5 units (30 at the centre, 10 at the edge). One use.
+- **Gas cans** (13, `res://scenes/props/gas_can.tscn`, `GasCan`, a solid body on the world layer): any bullet or pellet (the player's or a bandit's), a melee swing or a blast that touches one sets it off. The explosion hurts everyone within 4 units, the player included (60 at the centre, 15 at the edge), and sets off other gas cans in range 0.12 s later.
+
+### 19.6 The cartoon explosion (supersedes the explosion of 16.2)
+`res://scenes/fx/cartoon_explosion.tscn`, used by gas cans, landmines and both launchers: a star flash that pops to 3.2 and vanishes in 0.16 s; a fireball of 20 flat shaded balls (`toon_blob.gdshader`: a hot yellow white core band, the body colour, a hard dark rim that reads as an outline) running yellow, orange, red; a column of grey smoke balls; 24 tumbling debris cubes; 26 sparks; a shockwave ring racing out along the ground to 7 units in 0.38 s; a light of energy 12 fading in 0.4 s; camera shake scaled by distance.
+
+### 19.7 Audio (adds to 10; the three rules apply unchanged)
+New synthesised sounds: the throw (a swish), the tank burst (a metallic clank and an ignition whoosh), the fire crackle (a 2 s loop, crossfaded at the seam), the trap snap (a metallic snap with ringing), the mine beep. `--verify` passes on all 45 sounds.
+
+### 19.8 Tests (adds to 18.8)
+- `tests/game/test_hazards.gd`: the bear trap (-20, closed model, the player held), the landmine (-30, gone, explosion), a gas can set off by one bullet (a bandit 1.5 units away takes at least 30), fire (2 s in a patch: the player -20, a bandit -20, a Hazmat -0, flames on the player), the patch alive at 10 s and gone by 12 s, the Hazmat's tank landing as fire within 4 units of the player, melee weapons in the left hand.
+- `test_arena` checks the 76 unit perimeter, the hazards (13, 9, 7) and both enemy prefabs; `test_scenes` checks the new scenes; `test_scenes_runtime` checks the Hazmat shows no gun and holds his tank; `test_bandit_bounds` uses 37.6 and includes Hazmats; its travel clause also accepts an enemy that walked at least 3 units and reached the spot where it holds (a Hazmat from a near spawn point stops at 12 units after about 6), while the enemy that never moves still fails.
+- A lesson from this round, kept here for the next one: editing `weapon.gd` while `player.tscn` was open in the editor reset the fourteen weapon instances to the script's defaults, and the next save of the player scene wrote those defaults as overrides (every weapon at damage 10). `test_weapons` caught it; the instances were recreated. After changing a script with exported numbers, reopen the scenes that instance it before saving them.
+
+### 19.9 Wave 1 shows everything within seconds
+Marco asked that a new player see everything the game has in its first seconds. So:
+- Wave 1 has a Hazmat (4 bandits and 1 Hazmat, 3 alive at once), and he is its second spawn.
+- Wave 1 enemies spawn at the nearest points out of view (the near spawn points of 19.1), about 18 units from the player instead of 35.
+- One gas can, one bear trap and one landmine lie in the open lane ahead of and to the right of the spawn, in the first frame of play: `GasCanSpawn` (2.8, 0, 3.1), `BearTrapSpawn` (1.6, 0, 4.3), `LandmineSpawn` (4, 0, 5.2), close enough that the landmine sets the gas can off (`docs/evidence/v2-start-frame.png`).
+- A third tutorial line at 11.5 s of wave 1: "Shoot the red gas cans. Mind the traps and the mines. Stay out of the fire".
+
+Measured with the player standing still at the spawn: the first bandit is in the fight at 3.9 s, the Hazmat spawns 17 units away, his first gas tank flies at 6.8 s and the first fire patch burns at 7.8 s.
+
+### 19.10 A renderer fix
+Long fights logged hundreds of `Parameter "uniform_set" is null` errors from the Mobile renderer, all in waves 4 and 5. Every impact, tracer and muzzle flash duplicated its material to set its colour: hundreds of new GPU materials a minute. The three effects now share one material per colour (a static cache in `particles_once.gd`, `tracer.gd` and `muzzle_flash.gd`); a full five wave run logs zero errors.

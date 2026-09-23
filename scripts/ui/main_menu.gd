@@ -1,10 +1,10 @@
 extends Node3D
 ## Title screen: the built yard, live (sun, shadows, swaying trees), seen by MenuCam orbiting it once every 48 s.
 
-const RADIUS := 24.0
-const HEIGHT := 7.5
+const RADIUS := 44.0
+const HEIGHT := 15.0
 const PERIOD := 48.0
-const LOOK_AT := Vector3(0, 1.5, -4)
+const LOOK_AT := Vector3(0, 1.5, -2)
 
 @onready var cam: Camera3D = $MenuCam
 @onready var title: Label = $UI/Title

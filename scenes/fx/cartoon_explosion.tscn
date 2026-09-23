@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://7mogisyetrnw"]
+
+[ext_resource type="Script" uid="uid://b3cbqvx6ef5tk" path="res://scripts/fx/cartoon_explosion.gd" id="1_pey5n"]
+[ext_resource type="Material" uid="uid://dshub1httjydw" path="res://fx/boom_fire_process.tres" id="2_3k3md"]
+[ext_resource type="SphereMesh" uid="uid://cgaw1lcn4lfn7" path="res://fx/boom_fire_mesh.tres" id="3_3k3md"]
+[ext_resource type="SphereMesh" uid="uid://dabxin2mcss5b" path="res://fx/boom_ball_mesh.tres" id="3_twuao"]
+[ext_resource type="Material" uid="uid://q3opuqsfonbj" path="res://fx/boom_smoke_process.tres" id="4_tx56e"]
+[ext_resource type="Material" uid="uid://dffq4522asyso" path="res://fx/boom_debris_process.tres" id="5_win54"]
+[ext_resource type="BoxMesh" uid="uid://gt3ethhng3np" path="res://fx/boom_debris_mesh.tres" id="6_rccay"]
+[ext_resource type="Material" uid="uid://c7ypwhdp3hyxl" path="res://fx/boom_spark_process.tres" id="7_thsyx"]
+[ext_resource type="SphereMesh" uid="uid://5d3jrqemcsow" path="res://fx/boom_spark_mesh.tres" id="8_kyanc"]
+[ext_resource type="TorusMesh" uid="uid://dlk2xxgk86038" path="res://fx/shockwave_mesh.tres" id="9_yv0i2"]
+[ext_resource type="Material" uid="uid://5gebgtlmtxfs" path="res://materials/flash.tres" id="10_vuomk"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_7t52x"]
+
+[node name="CartoonExplosion" type="Node3D" unique_id=1419441312]
+script = ExtResource("1_pey5n")
+
+[node name="Fireball" type="GPUParticles3D" parent="." unique_id=513433666]
+cast_shadow = 0
+emitting = false
+amount = 20
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("2_3k3md")
+draw_pass_1 = ExtResource("3_3k3md")
+
+[node name="Smoke" type="GPUParticles3D" parent="." unique_id=1767429961]
+cast_shadow = 0
+emitting = false
+amount = 12
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.85
+process_material = ExtResource("4_tx56e")
+draw_pass_1 = ExtResource("3_twuao")
+
+[node name="Debris" type="GPUParticles3D" parent="." unique_id=693776857]
+cast_shadow = 0
+emitting = false
+amount = 24
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("5_win54")
+draw_pass_1 = ExtResource("6_rccay")
+
+[node name="Sparks" type="GPUParticles3D" parent="." unique_id=882111366]
+cast_shadow = 0
+emitting = false
+amount = 26
+lifetime = 0.45
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("7_thsyx")
+draw_pass_1 = ExtResource("8_kyanc")
+
+[node name="Shockwave" type="MeshInstance3D" parent="." unique_id=729163010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+cast_shadow = 0
+mesh = ExtResource("9_yv0i2")
+
+[node name="Flash" type="MeshInstance3D" parent="." unique_id=458562761]
+material_override = ExtResource("10_vuomk")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_7t52x")
+
+[node name="Light" type="OmniLight3D" parent="." unique_id=2056710159]
+light_color = Color(1, 0.69, 0.31, 1)
+light_energy = 12.0
+omni_range = 12.0

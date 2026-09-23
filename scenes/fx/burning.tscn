@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://begwh54nvwmnl"]
+
+[ext_resource type="Material" uid="uid://pb83bm438ckr" path="res://fx/burning_process.tres" id="1_slgpb"]
+[ext_resource type="QuadMesh" uid="uid://gj3wxa86smfh" path="res://fx/flame_quad.tres" id="2_g6jwp"]
+
+[node name="Burning" type="GPUParticles3D" unique_id=447950070]
+cast_shadow = 0
+emitting = false
+amount = 26
+lifetime = 0.6
+visibility_aabb = AABB(-2, -1, -2, 4, 4, 4)
+process_material = ExtResource("1_slgpb")
+draw_pass_1 = ExtResource("2_g6jwp")

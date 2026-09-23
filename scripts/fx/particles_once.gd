@@ -4,16 +4,24 @@ extends GPUParticles3D
 @export var free_after := 0.8
 @export var flash: NodePath
 
+## One process material per (material, colour), shared by every instance: duplicating it for each impact
+## built hundreds of GPU materials a minute, and the Mobile renderer ran out of uniform sets in long fights.
+static var _cache := {}
+
 
 func setup(pos: Vector3, normal: Vector3, color: Color) -> void:
 	global_position = pos
 	if normal.length() > 0.01 and abs(normal.normalized().dot(Vector3.UP)) < 0.999:
 		look_at(pos + normal, Vector3.UP)
 		rotate_object_local(Vector3.RIGHT, -PI * 0.5)
-	var pm: ParticleProcessMaterial = process_material.duplicate()
+	var pm: ParticleProcessMaterial = process_material
 	if pm.color_ramp == null:
-		pm.color = color
-	process_material = pm
+		var key := "%s|%s" % [pm.resource_path, color.to_html()]
+		if not _cache.has(key):
+			var d: ParticleProcessMaterial = pm.duplicate()
+			d.color = color
+			_cache[key] = d
+		process_material = _cache[key]
 	restart()
 	emitting = true
 	var fl := get_node_or_null(flash) if flash else null

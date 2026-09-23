@@ -1,6 +1,6 @@
 # Container Yard
 
-A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **Claude Opus 5.5**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster, a pistol and a knife and find the other eleven weapons of the kit lying around the yard: revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, a second knife and a shovel. A weapon wheel held open with Tab shows all fourteen as their real 3D models, rotating. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
+A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **Claude Opus 5.5**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a 76 by 76 container yard against five waves of red bandits and gas tank throwing Hazmats: run between stacked shipping containers, junk piles, sandbag lines and wrecked cars, aim over your shoulder and fire. You start with a blaster, a pistol and a knife and find the other eleven weapons of the kit lying around the yard: revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, a second knife and a shovel. A weapon wheel held open with Tab shows all fourteen as their real 3D models, rotating. Bandits arrive on foot from the edges of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Hazmats lob gas tanks that leave the ground burning for ten seconds, and anyone standing in the flames catches fire (Hazmats excepted). Watch your step: bear traps snap shut, landmines blow, and a gas can goes up in a cartoon explosion the moment a bullet touches it, which works on bandits too. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
 
 It starts from an empty project, one free asset pack, one concept image and one design document. Every scene in the game is created and edited inside the Xogot editor by the agent (scene, node, material, particle and UI commands through `xo`), not hand written as `.tscn` text.
 
@@ -23,11 +23,11 @@ Built for the next Letta Corporation video.
 | Escape | pause (resume, restart, menu, music and sound toggles) |
 | F1 (development only) | hold to snap to the concept image's camera, with the concept's two bandits posed, for the side by side comparisons |
 
-You start with the blaster, the pistol and the knife; the other eleven weapons are crates around the yard. Walk into one to unlock it; it comes back 45 s later as an ammo refill. Sandbags and containers stop the bandits' shots; theirs come in bursts of three.
+You start with the blaster, the pistol and the knife; the other eleven weapons are crates around the yard, the strongest ones far out. Walk into one to unlock it; it comes back 45 s later as an ammo refill. Knives and the shovel are held in the left hand, the one the swing uses. Sandbags and containers stop the bandits' shots; theirs come in bursts of three. Bear traps cost 20 health and hold you for a moment, landmines 30; fire burns 10 per second.
 
 ### Running the tests
 
-`sh tools/run_tests.sh` with the project open in Xogot runs every suite: the structural ones in `tests/editor/` through `xo test run --root res://tests/editor`, the behaviour ones in `tests/game/` inside a fresh live arena through `xo game eval`, and the menu check (`tools/check_menu.py`). `python3 tools/gen_audio.py --verify` checks the three audio rules.
+`sh tools/run_tests.sh` with the project open in Xogot runs every suite: the structural ones in `tests/editor/` through `xo test run --root res://tests/editor`, the behaviour ones in `tests/game/` inside a fresh live arena through `xo game eval` (camera, facing, weapons, bandit bounds, cover, crates, wheel, scenes, hazards), and the menu check (`tools/check_menu.py`). `python3 tools/gen_audio.py --verify` checks the three audio rules.
 
 ## The game design document
 
@@ -48,6 +48,7 @@ The full spec lives in [`docs/GDD.md`](docs/GDD.md) (also as [`docs/GDD.pdf`](do
    - **1.1** the full arsenal: all fourteen weapons of the kit (section 16).
    - **1.2** three starting weapons, eleven unlocks placed around the yard, and the weapon wheel with rotating 3D models (section 17).
    - **1.3** implementation notes: where the shipped build deviated from 1.0 to 1.2 and why (section 18): the concept region placed again by back projection from the image, the camera at 3.0 / -8°, chain link fences that stop bodies but not bullets, flat colour ambient light, ballistic grenades, the bandits' elliptical spread, and how the tests run.
+   - **2.0** after playing 1.3 (section 19): the yard grows to 76 by 76 with a hand placed outer ring, melee weapons move to the left hand, the Hazmat throws gas tanks that set the ground on fire, and bear traps, landmines and exploding gas cans join the yard, with a cartoon explosion. Wave 1 shows all of it within the first seconds.
 
 6. **Iterate with screenshots, not descriptions.** The concept image is the acceptance test for the look, judged in a fixed check order (camera height and horizon, distance and FOV, subject position, silhouettes, props, sky, ground, sun, fog, glow, grade, UI), fixing only the first failing item each time. The agent takes its own screenshots and runs the game through `xo`, so it checks its own work before reporting back.
 
@@ -60,10 +61,10 @@ The commit history of this repo follows the build order in section 13.2 one step
 | `docs/GDD.md`, `docs/GDD.pdf` | the game design document, all versions in one file |
 | `docs/asset-inventory.md` | every model in the pack with its `res://` path and measured size |
 | `docs/concept/concept.png` | the approved concept image, the acceptance test for the look |
-| `docs/evidence/` | the concept comparisons (`comparison-01` to `04`, `comparison-final`), one screenshot per wave of a full run, the results and overrun screens, every weapon firing, the weapon wheel, the yard from above |
-| `scenes/` | every scene, created in the Xogot editor: `arena.tscn`, `main.tscn`, `audio.tscn`, and `props/` (28 prop prefabs with collision), `actors/`, `weapons/` (14 weapons, grenade, rocket), `fx/`, `ui/` |
+| `docs/evidence/` | the concept comparisons (`comparison-01` to `05`, `comparison-final`), one screenshot per wave of a full run, the results and overrun screens, every weapon firing, the weapon wheel, the yard from above (`yard-top`, `yard-top-v2`), and the 2.0 features (`v2-*`: the first frame of play with a trap, a mine and a gas can in view, the Hazmat's throw, fire on the ground and on characters, the bear trap, the landmine, a gas can going up, the knife in the left hand) |
+| `scenes/` | every scene, created in the Xogot editor: `arena.tscn`, `main.tscn`, `audio.tscn`, and `props/` (34 prop prefabs with collision, plus the gas can, bear trap and landmine), `actors/` (player, bandit, Hazmat, pickups), `weapons/` (14 weapons, grenade, rocket, the thrown gas tank), `fx/` (tracer, flash, impact, cartoon explosion, fire patch, burning), `ui/` |
 | `scripts/` | GDScript: one script per scene, the shared `weapons/weapon.gd`, and the `autoload/` singletons (`Game`, `Audio`) |
-| `materials/`, `env/`, `fx/`, `shaders/`, `ui/` | container colours and effect materials, the yard environment, particle materials and meshes, the damage vignette, the UI theme |
+| `materials/`, `env/`, `fx/`, `shaders/`, `ui/` | container colours and effect materials, the yard environment, particle materials and meshes, the shaders (damage vignette, cartoon flame, scorched ground, toon explosion balls), the UI theme |
 | `tests/editor/`, `tests/game/` | the structural suites (`xo test run`) and the behaviour suites run inside the live game (`xo game eval`) |
 | `tools/` | `gen_audio.py` (audio synthesiser and `--verify`), `compare.py` (concept comparisons and the value table), `check_menu.py`, `run_tests.sh` |
 | `assets/Toon Shooter Game Kit - Dec 2022/` | Quaternius pack, untouched |

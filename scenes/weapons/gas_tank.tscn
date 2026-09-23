@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bs8cneupst3yu"]
+
+[ext_resource type="Script" uid="uid://b1iadhevuhwjc" path="res://scripts/weapons/gas_tank.gd" id="1_apnaw"]
+[ext_resource type="PackedScene" uid="uid://ksrscbgwaxtj" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/GasTank.gltf" id="2_dw8l3"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b1xcn"]
+radius = 0.26
+
+[node name="GasTank" type="RigidBody3D" unique_id=1218229008]
+collision_layer = 0
+collision_mask = 3
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
+script = ExtResource("1_apnaw")
+
+[node name="Model" parent="." unique_id=1799844068 instance=ExtResource("2_dw8l3")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.24, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=53591693]
+shape = SubResource("SphereShape3D_b1xcn")

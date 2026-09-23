@@ -2,6 +2,24 @@
 
 [ext_resource type="PackedScene" uid="uid://dh7ru4gfdwy1c" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Tree_1.gltf" id="1_colgr"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_colgr"]
+resource_name = "Tree_Wood"
+cull_mode = 2
+albedo_color = Color(0.41330338, 0.32684907, 0.2327908, 1)
+roughness = 0.5
+distance_fade_mode = 2
+distance_fade_min_distance = 2.5
+distance_fade_max_distance = 6.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_447mx"]
+resource_name = "Tree_Green"
+cull_mode = 2
+albedo_color = Color(0.46794844, 0.55332243, 0.16819872, 1)
+roughness = 0.5
+distance_fade_mode = 2
+distance_fade_min_distance = 2.5
+distance_fade_max_distance = 6.0
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_447mx"]
 height = 3.0
 radius = 0.35
@@ -11,6 +29,12 @@ collision_mask = 0
 
 [node name="Model" parent="." unique_id=1624567530 instance=ExtResource("1_colgr")]
 
+[node name="Tree_1" parent="Model" index="0" unique_id=1077876651]
+surface_material_override/0 = SubResource("StandardMaterial3D_colgr")
+surface_material_override/1 = SubResource("StandardMaterial3D_447mx")
+
 [node name="Shape" type="CollisionShape3D" parent="." unique_id=972423844]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_447mx")
+
+[editable path="Model"]
