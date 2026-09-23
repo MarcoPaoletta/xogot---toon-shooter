@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dspmigdhj2qno"]
+
+[ext_resource type="PackedScene" uid="uid://dce8c8m2dv762" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/StreetLight.gltf" id="1_mf0ye"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_oup23"]
+height = 3.0
+radius = 0.35
+
+[node name="StreetLight" type="StaticBody3D" unique_id=1383338745]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=770904102 instance=ExtResource("1_mf0ye")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=688102880]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("CylinderShape3D_oup23")

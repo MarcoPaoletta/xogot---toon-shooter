@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dc6nxpaobe0tr"]
+
+[ext_resource type="PackedScene" uid="uid://dh1481w44x0md" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Barrier_Fixed.gltf" id="1_5slpf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qchi4"]
+size = Vector3(3.8055258, 3.1832843, 0.6666404)
+
+[node name="BarrierFixed" type="StaticBody3D" unique_id=1131065690]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=86931731 instance=ExtResource("1_5slpf")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=758603258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.006568074, 1.5881428, -0.0052561164)
+shape = SubResource("BoxShape3D_qchi4")

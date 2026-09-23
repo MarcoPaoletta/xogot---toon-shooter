@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://7k7k8w747qy3"]
+
+[ext_resource type="PackedScene" uid="uid://45ylm4vdogqd" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Pallet.gltf" id="1_rdv84"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m45wn"]
+size = Vector3(1.6960201, 0.19322173, 1.456584)
+
+[node name="Pallet" type="StaticBody3D" unique_id=1340651942]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1245854647 instance=ExtResource("1_rdv84")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=133692875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09043388, 0)
+shape = SubResource("BoxShape3D_m45wn")

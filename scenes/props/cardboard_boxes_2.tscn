@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cpckg7ha6b645"]
+
+[ext_resource type="PackedScene" uid="uid://da8bpcr0msa" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/CardboardBoxes_2.gltf" id="1_w0u36"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_70gv7"]
+size = Vector3(0.97553825, 0.9473276, 0.9207026)
+
+[node name="CardboardBoxes2" type="StaticBody3D" unique_id=2027247596]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1670100929 instance=ExtResource("1_w0u36")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1250332631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4736638, 0.0049677193)
+shape = SubResource("BoxShape3D_70gv7")

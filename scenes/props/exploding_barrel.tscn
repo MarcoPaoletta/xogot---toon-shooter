@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dr587f34jcrda"]
+
+[ext_resource type="PackedScene" uid="uid://sng8lixquxkq" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/ExplodingBarrel.gltf" id="1_uxe66"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b03v4"]
+size = Vector3(0.78498495, 1.0242863, 0.78498495)
+
+[node name="ExplodingBarrel" type="StaticBody3D" unique_id=439256019]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1240021164 instance=ExtResource("1_uxe66")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1881128585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.854534e-07, 0.5121432, 1.1920929e-07)
+shape = SubResource("BoxShape3D_b03v4")

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://w6d76e8bglt1"]
+
+[ext_resource type="PackedScene" uid="uid://qkscqw2l11aj" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/WaterTank_Platform.gltf" id="1_lajth"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rtnj4"]
+size = Vector3(3.8910017, 8.449254, 5.639932)
+
+[node name="WaterTower" type="StaticBody3D" unique_id=2010142392]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1968766083 instance=ExtResource("1_lajth")]
+transform = Transform3D(2.4, 0, 0, 0, 2.4, 0, 0, 0, 2.4, 0, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1700777006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0025405884, 4.1075196, 0.71703434)
+shape = SubResource("BoxShape3D_rtnj4")

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cpp17testy6ca"]
+
+[ext_resource type="PackedScene" uid="uid://114iu1tu8fvs" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/TrafficCone.gltf" id="1_ctr15"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sq3jt"]
+size = Vector3(0.6745675, 0.63671106, 0.6745675)
+
+[node name="TrafficCone" type="StaticBody3D" unique_id=95098740]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=498725907 instance=ExtResource("1_ctr15")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1467347166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31988204, 0)
+shape = SubResource("BoxShape3D_sq3jt")

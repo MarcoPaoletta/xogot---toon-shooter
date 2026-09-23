@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://btoynjs8w6wg1"]
+
+[ext_resource type="PackedScene" uid="uid://c4lkv0mcx5hty" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Tree_2.gltf" id="1_s18s0"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ws3sf"]
+height = 3.0
+radius = 0.35
+
+[node name="Tree2" type="StaticBody3D" unique_id=1479300012]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1469891420 instance=ExtResource("1_s18s0")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1179114607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("CylinderShape3D_ws3sf")

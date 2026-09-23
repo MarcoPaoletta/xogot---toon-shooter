@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cfaepqt088p6e"]
+
+[ext_resource type="PackedScene" uid="uid://pjko3o3s2hw0" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Container_Small.gltf" id="1_8n0fl"]
+[ext_resource type="Material" uid="uid://cxwb7a0phmuoo" path="res://materials/container_yellow.tres" id="2_6t00l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_er0e6"]
+size = Vector3(2.1944742, 2.1307285, 2.0900447)
+
+[node name="ContainerSmallYellow" type="StaticBody3D" unique_id=487745687]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=1662133146 instance=ExtResource("1_8n0fl")]
+
+[node name="Container_Small" parent="Model" index="0" unique_id=69493216]
+surface_material_override/0 = ExtResource("2_6t00l")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1368846687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1043714, 0)
+shape = SubResource("BoxShape3D_er0e6")
+
+[editable path="Model"]

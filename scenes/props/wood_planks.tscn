@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://brc4x8gw8ovpu"]
+
+[ext_resource type="PackedScene" uid="uid://be5je1otwys0m" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/WoodPlanks.gltf" id="1_0o0hb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aob4d"]
+size = Vector3(0.71643215, 0.12439737, 1.7283211)
+
+[node name="WoodPlanks" type="StaticBody3D" unique_id=1876016938]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=2080552229 instance=ExtResource("1_0o0hb")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=75567522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028493434, 0.15826128, -0.03266889)
+shape = SubResource("BoxShape3D_aob4d")

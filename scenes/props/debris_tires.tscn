@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ckvsn332yl60n"]
+
+[ext_resource type="PackedScene" uid="uid://cb0hhytof1st3" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Debris_Tires.gltf" id="1_uyki5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gew8t"]
+size = Vector3(1.7555634, 1.0875114, 1.1444182)
+
+[node name="DebrisTires" type="StaticBody3D" unique_id=1808589211]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=210563014 instance=ExtResource("1_uyki5")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1042442355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30422992, 0.5148623, 0.0005888939)
+shape = SubResource("BoxShape3D_gew8t")

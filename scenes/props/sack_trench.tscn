@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c3kp03wo3ia8p"]
+
+[ext_resource type="PackedScene" uid="uid://bwtuvw8fc1105" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/SackTrench.gltf" id="1_mi7d3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s7q1w"]
+size = Vector3(3.3451424, 1.277269, 0.92463386)
+
+[node name="SackTrench" type="StaticBody3D" unique_id=727406346]
+collision_mask = 0
+
+[node name="Model" parent="." unique_id=833413472 instance=ExtResource("1_mi7d3")]
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=307116048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04347658, 0.6047476, -0.094070375)
+shape = SubResource("BoxShape3D_s7q1w")
