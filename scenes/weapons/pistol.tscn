@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dghd7ikstjajd"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_4jni1"]
+
+[node name="Pistol" type="Node3D" unique_id=570265477]
+script = ExtResource("1_4jni1")
+weapon_id = "pistol"
+automatic = false
+rate = 4
+damage = 15
+cone_hip = 0.8
+cone_aim = 0.4
+ammo_max = 36
+recoil = 0.8
+fire_sound = "pistol"

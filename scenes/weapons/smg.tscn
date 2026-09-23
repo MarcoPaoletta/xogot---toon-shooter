@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d1xweyb2hrq0d"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_elgwk"]
+
+[node name="SMG" type="Node3D" unique_id=707531237]
+script = ExtResource("1_elgwk")
+weapon_id = "smg"
+rate = 14
+damage = 6
+cone_hip = 2.5
+cone_aim = 1.5
+cone_growth = 0.1
+cone_max = 4.0
+ammo_max = 120
+recoil = 0.3
+fire_sound = "smg"

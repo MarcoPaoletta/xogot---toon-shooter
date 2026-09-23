@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://fpubsr2ygwpr"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_yutam"]
+[ext_resource type="PackedScene" uid="uid://mbielm71ljve" path="res://scenes/weapons/rocket.tscn" id="2_l7tsv"]
+
+[node name="RocketLauncher" type="Node3D" unique_id=693076744]
+script = ExtResource("1_yutam")
+weapon_id = "rocket_launcher"
+mode = 1
+automatic = false
+rate = 0.6
+damage = 120
+damage_edge = 30
+ammo_max = 4
+recoil = 3.0
+projectile_scene = ExtResource("2_l7tsv")
+projectile_speed = 30
+blast_radius = 4
+fire_sound = "rocket"
+tracer_color = Color(1, 0.7, 0.4, 1)

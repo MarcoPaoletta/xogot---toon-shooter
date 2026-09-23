@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cjrx1w3exc6ed"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_f4syl"]
+
+[node name="Knife1" type="Node3D" unique_id=2093853807]
+script = ExtResource("1_f4syl")
+weapon_id = "knife_1"
+mode = 2
+automatic = false
+rate = 2
+damage = 40
+recoil = 0
+reach = 1.8
+swing_speed = 1.74
+fire_sound = "knife_swish_1"
+hit_sound = "knife_hit"

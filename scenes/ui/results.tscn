@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://0qllkouikve"]
+
+[ext_resource type="Theme" uid="uid://ctt5q7sq4u18d" path="res://ui/theme.tres" id="1_c7ncx"]
+[ext_resource type="Script" uid="uid://cnqrj6ba1mtbu" path="res://scripts/ui/results.gd" id="2_qac8e"]
+
+[node name="Results" type="Control" unique_id=765552469]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_c7ncx")
+script = ExtResource("2_qac8e")
+
+[node name="Background" type="TextureRect" parent="." unique_id=2147277502]
+modulate = Color(0.45, 0.45, 0.48, 1)
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1704304095]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -340.0
+offset_right = 420.0
+offset_bottom = 340.0
+
+[node name="Layout" type="VBoxContainer" parent="Panel" unique_id=138496028]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/Layout" unique_id=552719875]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.05, 0.85)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 72
+text = "Yard held"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="Panel/Layout" unique_id=1575788598]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.42, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.05, 0.85)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 110
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stats" type="Label" parent="Panel/Layout" unique_id=422076885]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.05, 0.85)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Layout" unique_id=1222780667]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="Retry" type="Button" parent="Panel/Layout/Buttons" unique_id=1359322337]
+custom_minimum_size = Vector2(300, 90)
+layout_mode = 2
+text = "Retry"
+
+[node name="Menu" type="Button" parent="Panel/Layout/Buttons" unique_id=289347785]
+custom_minimum_size = Vector2(300, 90)
+layout_mode = 2
+text = "Menu"

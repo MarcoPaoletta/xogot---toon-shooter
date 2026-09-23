@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b5e83vsfcjbxm"]
+
+[ext_resource type="Script" uid="uid://b533suhxrx7u" path="res://scripts/actors/bandit.gd" id="1_msuhk"]
+[ext_resource type="PackedScene" uid="uid://d3tbgx383w3ct" path="res://assets/Toon Shooter Game Kit - Dec 2022/Characters/glTF/Character_Enemy.gltf" id="2_bico4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jr8mj"]
+radius = 0.45
+
+[node name="Bandit" type="CharacterBody3D" unique_id=976830196]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_msuhk")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1661270105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_jr8mj")
+
+[node name="Model" type="Node3D" parent="." unique_id=171594496]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Character_Enemy" parent="Model" unique_id=989357277 instance=ExtResource("2_bico4")]
+
+[node name="NavAgent" type="NavigationAgent3D" parent="." unique_id=706395941]
+path_desired_distance = 0.6
+avoidance_enabled = true
+height = 2.2
+max_neighbors = 8
+max_speed = 6.0
+
+[node name="Eyes" type="RayCast3D" parent="." unique_id=625858251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+enabled = false
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1637536185]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.3, -0.5)

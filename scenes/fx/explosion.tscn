@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ddr4i05265rdp"]
+
+[ext_resource type="Material" uid="uid://dghqm2x086sax" path="res://fx/explosion_process.tres" id="1_05ub2"]
+[ext_resource type="SphereMesh" uid="uid://bnm8x3if431e0" path="res://fx/explosion_mesh.tres" id="2_af6gm"]
+[ext_resource type="Script" uid="uid://dxw8hau4m0mu1" path="res://scripts/fx/particles_once.gd" id="3_af6gm"]
+
+[node name="Explosion" type="GPUParticles3D" unique_id=1159095173]
+cast_shadow = 0
+emitting = false
+amount = 24
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("1_05ub2")
+draw_pass_1 = ExtResource("2_af6gm")
+script = ExtResource("3_af6gm")
+free_after = 1.2
+flash = NodePath("Light")
+
+[node name="Light" type="OmniLight3D" parent="." unique_id=577217769]
+light_color = Color(1, 0.702, 0.278, 1)
+light_energy = 6.0
+omni_range = 8.0

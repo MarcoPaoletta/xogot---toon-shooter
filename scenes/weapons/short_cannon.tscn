@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b6f7et35wuopp"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_q5pro"]
+
+[node name="ShortCannon" type="Node3D" unique_id=1619386907]
+script = ExtResource("1_q5pro")
+weapon_id = "short_cannon"
+automatic = false
+rate = 0.9
+damage = 8
+cone_hip = 10
+cone_aim = 8
+pellets = 10
+max_range = 12
+ammo_max = 12
+recoil = 4.0
+knockback = 1.0
+knockback_min_pellets = 5
+fire_sound = "short_cannon"

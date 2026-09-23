@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://larhqapw4kp"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_5gsqq"]
+[ext_resource type="PackedScene" uid="uid://bgigbuml8ggdn" path="res://scenes/weapons/grenade.tscn" id="2_thh8i"]
+
+[node name="GrenadeLauncher" type="Node3D" unique_id=516143953]
+script = ExtResource("1_5gsqq")
+weapon_id = "grenade_launcher"
+mode = 1
+automatic = false
+rate = 1
+damage = 60
+damage_edge = 20
+ammo_max = 8
+recoil = 1.5
+projectile_scene = ExtResource("2_thh8i")
+projectile_speed = 18
+projectile_gravity = 24
+blast_radius = 3
+fire_sound = "grenade_launcher"
+tracer_color = Color(1, 0.85, 0.5, 1)

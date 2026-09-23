@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b8w2eg8o3gi75"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_hloqn"]
+
+[node name="Shovel" type="Node3D" unique_id=142708918]
+script = ExtResource("1_hloqn")
+weapon_id = "shovel"
+mode = 2
+automatic = false
+rate = 1.2
+damage = 70
+recoil = 0
+knockback = 1.5
+reach = 2.2
+arc = 120
+swing_speed = 0.7
+fire_sound = "shovel_swish"
+hit_sound = "shovel_clang"

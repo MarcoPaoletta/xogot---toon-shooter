@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://40xi1vavbill"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_hn2em"]
+
+[node name="Sniper" type="Node3D" unique_id=43925788]
+script = ExtResource("1_hn2em")
+weapon_id = "sniper"
+automatic = false
+rate = 0.8
+damage = 90
+cone_hip = 3.0
+cone_aim = 0.05
+ammo_max = 10
+recoil = 2.5
+aim_fov = 25
+scoped = true
+fire_sound = "sniper"

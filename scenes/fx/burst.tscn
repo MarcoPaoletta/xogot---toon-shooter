@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bcibw682fdrdt"]
+
+[ext_resource type="Material" uid="uid://d3cxeh2lwkrhd" path="res://fx/burst_process.tres" id="1_cni2l"]
+[ext_resource type="SphereMesh" uid="uid://bogn6ep1yv6x4" path="res://fx/burst_mesh.tres" id="2_8u2gb"]
+[ext_resource type="Script" uid="uid://dxw8hau4m0mu1" path="res://scripts/fx/particles_once.gd" id="3_8u2gb"]
+
+[node name="Burst" type="GPUParticles3D" unique_id=1003641221]
+cast_shadow = 0
+emitting = false
+amount = 20
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("1_cni2l")
+draw_pass_1 = ExtResource("2_8u2gb")
+script = ExtResource("3_8u2gb")
+free_after = 1.0

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://byorunth1mhu4"]
+
+[ext_resource type="Material" uid="uid://cvuqjnd3ec7px" path="res://fx/impact_process.tres" id="1_yahl1"]
+[ext_resource type="SphereMesh" uid="uid://cb4yn4t8wypbf" path="res://fx/impact_mesh.tres" id="2_sfl75"]
+[ext_resource type="Script" uid="uid://dxw8hau4m0mu1" path="res://scripts/fx/particles_once.gd" id="3_sfl75"]
+
+[node name="Impact" type="GPUParticles3D" unique_id=1515275557]
+cast_shadow = 0
+emitting = false
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("1_yahl1")
+draw_pass_1 = ExtResource("2_sfl75")
+script = ExtResource("3_sfl75")
+free_after = 0.6

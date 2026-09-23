@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://mbielm71ljve"]
+
+[ext_resource type="Script" uid="uid://clpkuhjoldudn" path="res://scripts/weapons/rocket.gd" id="1_1yf5p"]
+[ext_resource type="PackedScene" uid="uid://jcdopiu1i8sq" path="res://assets/Toon Shooter Game Kit - Dec 2022/Guns/glTF/FireGrenade.gltf" id="2_n86w0"]
+[ext_resource type="Material" uid="uid://dd6n1f64gmqrk" path="res://fx/smoke_process.tres" id="3_a1i3e"]
+[ext_resource type="SphereMesh" uid="uid://dhgmlejfm7iwm" path="res://fx/smoke_mesh.tres" id="4_7f0yl"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_y452p"]
+radius = 0.2
+
+[node name="Rocket" type="Area3D" unique_id=843601265]
+collision_layer = 0
+collision_mask = 5
+script = ExtResource("1_1yf5p")
+
+[node name="Model" parent="." unique_id=1176987690 instance=ExtResource("2_n86w0")]
+transform = Transform3D(0.6, 0, 0, 0, -2.6226834e-08, 0.6, 0, -0.6, -2.6226834e-08, 0, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1722984071]
+shape = SubResource("SphereShape3D_y452p")
+
+[node name="Trail" type="GPUParticles3D" parent="." unique_id=702020510]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.35)
+cast_shadow = 0
+amount = 18
+lifetime = 0.6
+process_material = ExtResource("3_a1i3e")
+draw_pass_1 = ExtResource("4_7f0yl")

@@ -1,3 +1,18 @@
 [gd_scene format=3 uid="uid://dxohdk2kl3qss"]
 
+[ext_resource type="Script" uid="uid://drksmwx4krbn5" path="res://scripts/main.gd" id="1_o5qli"]
+
 [node name="Main" type="Node" unique_id=563924579]
+script = ExtResource("1_o5qli")
+
+[node name="SceneSlot" type="Node" parent="." unique_id=1109360170]
+
+[node name="Fader" type="CanvasLayer" parent="." unique_id=859126216]
+layer = 100
+
+[node name="Rect" type="ColorRect" parent="Fader" unique_id=1698119335]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

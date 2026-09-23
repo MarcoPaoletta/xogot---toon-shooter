@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bvr54xceds0ed"]
+
+[ext_resource type="Script" uid="uid://bq8ody8kk71y1" path="res://scripts/weapons/weapon.gd" id="1_ydqbe"]
+
+[node name="Revolver" type="Node3D" unique_id=800460508]
+script = ExtResource("1_ydqbe")
+weapon_id = "revolver"
+automatic = false
+rate = 2.5
+damage = 35
+cone_hip = 0.4
+cone_aim = 0.2
+ammo_max = 18
+recoil = 2.0
+stagger = 0.6
+fire_sound = "revolver"

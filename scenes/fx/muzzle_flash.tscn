@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bvnn6pmfptawc"]
+
+[ext_resource type="Script" uid="uid://bn0glw8hirk8t" path="res://scripts/fx/muzzle_flash.gd" id="1_mvxjv"]
+[ext_resource type="Material" uid="uid://5gebgtlmtxfs" path="res://materials/flash.tres" id="2_c76n8"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_dtn8i"]
+size = Vector2(0.5, 0.5)
+
+[node name="MuzzleFlash" type="Node3D" unique_id=1063473149]
+script = ExtResource("1_mvxjv")
+
+[node name="Quad" type="MeshInstance3D" parent="." unique_id=404845458]
+material_override = ExtResource("2_c76n8")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_dtn8i")
+
+[node name="Light" type="OmniLight3D" parent="." unique_id=806393978]
+light_color = Color(1, 0.702, 0.278, 1)
+light_energy = 4.0
+omni_range = 3.0

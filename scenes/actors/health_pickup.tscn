@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bdh3em0etxo7u"]
+
+[ext_resource type="Script" uid="uid://bm8k3p7sj64e1" path="res://scripts/actors/health_pickup.gd" id="1_8d28r"]
+[ext_resource type="PackedScene" uid="uid://dt58eqh0u0u45" path="res://assets/Toon Shooter Game Kit - Dec 2022/Environment/glTF/Health.gltf" id="2_waitb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bh452"]
+radius = 0.9
+
+[node name="HealthPickup" type="Area3D" unique_id=740823818]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_8d28r")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=379284000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("SphereShape3D_bh452")
+
+[node name="Model" parent="." unique_id=1713416482 instance=ExtResource("2_waitb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+
+[node name="Light" type="OmniLight3D" parent="." unique_id=1644787917]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+light_color = Color(0.553, 1, 0.553, 1)
+light_energy = 1.2
+omni_range = 2.0

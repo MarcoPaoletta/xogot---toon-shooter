@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://c2rj1kce413aj"]
+
+[ext_resource type="Script" uid="uid://bnhq6px6yk165" path="res://scripts/actors/player.gd" id="1_0878f"]
+[ext_resource type="PackedScene" uid="uid://c6qdawi0dcuwg" path="res://assets/Toon Shooter Game Kit - Dec 2022/Characters/glTF/Character_Soldier.gltf" id="2_dferu"]
+[ext_resource type="PackedScene" uid="uid://dja55kp4atcoo" path="res://scenes/weapons/blaster.tscn" id="3_t62v4"]
+[ext_resource type="PackedScene" uid="uid://dghd7ikstjajd" path="res://scenes/weapons/pistol.tscn" id="4_uqfkb"]
+[ext_resource type="PackedScene" uid="uid://bvr54xceds0ed" path="res://scenes/weapons/revolver.tscn" id="5_642so"]
+[ext_resource type="PackedScene" uid="uid://cbh7845l502j5" path="res://scenes/weapons/revolver_small.tscn" id="6_afsss"]
+[ext_resource type="PackedScene" uid="uid://d1xweyb2hrq0d" path="res://scenes/weapons/smg.tscn" id="7_6a6mx"]
+[ext_resource type="PackedScene" uid="uid://b73dy21ghepab" path="res://scenes/weapons/shotgun.tscn" id="8_j3wsw"]
+[ext_resource type="PackedScene" uid="uid://b6f7et35wuopp" path="res://scenes/weapons/short_cannon.tscn" id="9_ds2sr"]
+[ext_resource type="PackedScene" uid="uid://40xi1vavbill" path="res://scenes/weapons/sniper.tscn" id="10_6xqls"]
+[ext_resource type="PackedScene" uid="uid://cy4tjcon5ltxn" path="res://scenes/weapons/sniper_2.tscn" id="11_3hvrq"]
+[ext_resource type="PackedScene" uid="uid://larhqapw4kp" path="res://scenes/weapons/grenade_launcher.tscn" id="12_bwi5y"]
+[ext_resource type="PackedScene" uid="uid://fpubsr2ygwpr" path="res://scenes/weapons/rocket_launcher.tscn" id="13_18oyn"]
+[ext_resource type="PackedScene" uid="uid://cjrx1w3exc6ed" path="res://scenes/weapons/knife_1.tscn" id="14_f6erl"]
+[ext_resource type="PackedScene" uid="uid://ccpwyh5x5p5pp" path="res://scenes/weapons/knife_2.tscn" id="15_k7i36"]
+[ext_resource type="PackedScene" uid="uid://b8w2eg8o3gi75" path="res://scenes/weapons/shovel.tscn" id="16_366ld"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8pjo5"]
+radius = 0.45
+
+[node name="Player" type="CharacterBody3D" unique_id=1446888335]
+collision_layer = 2
+script = ExtResource("1_0878f")
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=189587626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_8pjo5")
+
+[node name="Model" type="Node3D" parent="." unique_id=25284842]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Character_Soldier" parent="Model" unique_id=1239238692 instance=ExtResource("2_dferu")]
+
+[node name="AimPoint" type="Marker3D" parent="." unique_id=469274202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=313361246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="Pitch" type="Node3D" parent="CameraRig" unique_id=405316734]
+transform = Transform3D(1, 0, 0, 0, 0.99026805, 0.1391731, 0, -0.1391731, 0.99026805, 0, 0, 0)
+
+[node name="Arm" type="SpringArm3D" parent="CameraRig/Pitch" unique_id=900132927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0.4679, 0)
+spring_length = 6.7306
+margin = 0.3
+
+[node name="Camera" type="Camera3D" parent="CameraRig/Pitch/Arm" unique_id=1987313890]
+fov = 50.0
+far = 200.0
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1025570925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.3, -0.8)
+
+[node name="WeaponSlot" type="Node3D" parent="." unique_id=654876579]
+
+[node name="Blaster" parent="WeaponSlot" unique_id=2072902592 instance=ExtResource("3_t62v4")]
+
+[node name="Pistol" parent="WeaponSlot" unique_id=570265477 instance=ExtResource("4_uqfkb")]
+
+[node name="Revolver" parent="WeaponSlot" unique_id=800460508 instance=ExtResource("5_642so")]
+
+[node name="RevolverSmall" parent="WeaponSlot" unique_id=945071239 instance=ExtResource("6_afsss")]
+
+[node name="SMG" parent="WeaponSlot" unique_id=707531237 instance=ExtResource("7_6a6mx")]
+
+[node name="Shotgun" parent="WeaponSlot" unique_id=1615757509 instance=ExtResource("8_j3wsw")]
+
+[node name="ShortCannon" parent="WeaponSlot" unique_id=1619386907 instance=ExtResource("9_ds2sr")]
+
+[node name="Sniper" parent="WeaponSlot" unique_id=43925788 instance=ExtResource("10_6xqls")]
+
+[node name="Sniper2" parent="WeaponSlot" unique_id=1739948000 instance=ExtResource("11_3hvrq")]
+
+[node name="GrenadeLauncher" parent="WeaponSlot" unique_id=516143953 instance=ExtResource("12_bwi5y")]
+
+[node name="RocketLauncher" parent="WeaponSlot" unique_id=693076744 instance=ExtResource("13_18oyn")]
+
+[node name="Knife1" parent="WeaponSlot" unique_id=2093853807 instance=ExtResource("14_f6erl")]
+
+[node name="Knife2" parent="WeaponSlot" unique_id=1427850765 instance=ExtResource("15_k7i36")]
+
+[node name="Shovel" parent="WeaponSlot" unique_id=142708918 instance=ExtResource("16_366ld")]

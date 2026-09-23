@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bx6wgdkxrq2ck"]
+
+[ext_resource type="Material" uid="uid://c8vmj1xpfarfp" path="res://materials/tracer.tres" id="1_wkuxq"]
+[ext_resource type="Script" uid="uid://dhuy3762cbd3b" path="res://scripts/fx/tracer.gd" id="2_budt2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ttps5"]
+size = Vector3(0.03, 0.03, 1)
+
+[node name="Tracer" type="MeshInstance3D" unique_id=1744407083]
+material_override = ExtResource("1_wkuxq")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_ttps5")
+script = ExtResource("2_budt2")

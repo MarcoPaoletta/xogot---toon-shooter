@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://datgipfmdai22"]
+
+[ext_resource type="Script" uid="uid://c082sndffmjd8" path="res://scripts/autoload/audio.gd" id="1_6n3bj"]
+
+[node name="Audio" type="Node" unique_id=118410956]
+script = ExtResource("1_6n3bj")
+
+[node name="Flat" type="Node" parent="." unique_id=687483686]
+
+[node name="Sfx1" type="AudioStreamPlayer" parent="Flat" unique_id=455161677]
+bus = &"SFX"
+
+[node name="Sfx2" type="AudioStreamPlayer" parent="Flat" unique_id=1920772876]
+bus = &"SFX"
+
+[node name="Sfx3" type="AudioStreamPlayer" parent="Flat" unique_id=1950699693]
+bus = &"SFX"
+
+[node name="Sfx4" type="AudioStreamPlayer" parent="Flat" unique_id=1705826935]
+bus = &"SFX"
+
+[node name="Sfx5" type="AudioStreamPlayer" parent="Flat" unique_id=1816500398]
+bus = &"SFX"
+
+[node name="Sfx6" type="AudioStreamPlayer" parent="Flat" unique_id=233975304]
+bus = &"SFX"
+
+[node name="Sfx7" type="AudioStreamPlayer" parent="Flat" unique_id=54965528]
+bus = &"SFX"
+
+[node name="Sfx8" type="AudioStreamPlayer" parent="Flat" unique_id=2140845338]
+bus = &"SFX"
+
+[node name="Sfx9" type="AudioStreamPlayer" parent="Flat" unique_id=830379716]
+bus = &"SFX"
+
+[node name="Sfx10" type="AudioStreamPlayer" parent="Flat" unique_id=1686693332]
+bus = &"SFX"
+
+[node name="Sfx11" type="AudioStreamPlayer" parent="Flat" unique_id=133546323]
+bus = &"SFX"
+
+[node name="Sfx12" type="AudioStreamPlayer" parent="Flat" unique_id=1219280982]
+bus = &"SFX"
+
+[node name="Positional" type="Node3D" parent="." unique_id=1908047721]
+
+[node name="Sfx3D1" type="AudioStreamPlayer3D" parent="Positional" unique_id=1402579015]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D2" type="AudioStreamPlayer3D" parent="Positional" unique_id=182033776]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D3" type="AudioStreamPlayer3D" parent="Positional" unique_id=318202878]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D4" type="AudioStreamPlayer3D" parent="Positional" unique_id=1475801490]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D5" type="AudioStreamPlayer3D" parent="Positional" unique_id=761787673]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D6" type="AudioStreamPlayer3D" parent="Positional" unique_id=496033880]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D7" type="AudioStreamPlayer3D" parent="Positional" unique_id=1420286602]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D8" type="AudioStreamPlayer3D" parent="Positional" unique_id=546671355]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D9" type="AudioStreamPlayer3D" parent="Positional" unique_id=783596288]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D10" type="AudioStreamPlayer3D" parent="Positional" unique_id=247801799]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D11" type="AudioStreamPlayer3D" parent="Positional" unique_id=1055454081]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D12" type="AudioStreamPlayer3D" parent="Positional" unique_id=310302319]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D13" type="AudioStreamPlayer3D" parent="Positional" unique_id=176621039]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D14" type="AudioStreamPlayer3D" parent="Positional" unique_id=1054512666]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D15" type="AudioStreamPlayer3D" parent="Positional" unique_id=2067544751]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="Sfx3D16" type="AudioStreamPlayer3D" parent="Positional" unique_id=1771035277]
+unit_size = 12.0
+bus = &"SFX"
+
+[node name="MusicA" type="AudioStreamPlayer" parent="." unique_id=1910941413]
+bus = &"Music"
+
+[node name="MusicB" type="AudioStreamPlayer" parent="." unique_id=1902334962]
+bus = &"Music"
