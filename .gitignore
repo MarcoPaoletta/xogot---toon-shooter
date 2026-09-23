@@ -16,3 +16,6 @@ export_presets.cfg
 .vscode/
 .idea/
 *.swp
+
+# a duplicate of scenes/ui/main_menu.tscn that the editor sometimes writes at the project root
+/main_menu.tscn
