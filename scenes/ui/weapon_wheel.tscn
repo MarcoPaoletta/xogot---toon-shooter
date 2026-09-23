@@ -145,7 +145,7 @@ light_energy = 0.4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9141, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot1" unique_id=1473147887]
-transform = Transform3D(0.59761834, 0, 0, 0, 0.59761834, 0, 0, 0, 0.59761834, 0, 0, 0)
+transform = Transform3D(0.7382344, 0, 0, 0, 0.7382344, 0, 0, 0, 0.7382344, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot1/Pivot" unique_id=1408549922 instance=ExtResource("2_gkmw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31623548, -0.047394842, 0.0015455559)
@@ -154,7 +154,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31623548, -0.047394842, 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8305, 1.7245, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot2" unique_id=404783010]
-transform = Transform3D(1.0746856, 0, 0, 0, 1.0746856, 0, 0, 0, 1.0746856, 0, 0, 0)
+transform = Transform3D(1.3275528, 0, 0, 0, 1.3275528, 0, 0, 0, 1.3275528, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot2/Pivot" unique_id=1885575138 instance=ExtResource("3_d4aq6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28537372, -0.11391808, -1.0430813e-07)
@@ -163,7 +163,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28537372, -0.11391808, -1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4965, 1.1934, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot3" unique_id=1871341060]
-transform = Transform3D(0.8596241, 0, 0, 0, 0.8596241, 0, 0, 0, 0.8596241, 0, 0, 0)
+transform = Transform3D(1.0618886, 0, 0, 0, 1.0618886, 0, 0, 0, 1.0618886, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot3/Pivot" unique_id=68035229 instance=ExtResource("4_8avsf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3405202, -0.08510938, 0.005756907)
@@ -172,7 +172,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3405202, -0.08510938, 0.005
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8661, 0.4259, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot4" unique_id=1938988816]
-transform = Transform3D(1.2817466, 0, 0, 0, 1.2817466, 0, 0, 0, 1.2817466, 0, 0, 0)
+transform = Transform3D(1.5833341, 0, 0, 0, 1.5833341, 0, 0, 0, 1.5833341, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot4/Pivot" unique_id=1824378457 instance=ExtResource("5_xwy7k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20850217, -0.11092295, 8.34465e-07)
@@ -181,7 +181,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20850217, -0.11092295, 8.34
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8661, -0.4259, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot5" unique_id=1820060518]
-transform = Transform3D(0.74313766, 0, 0, 0, 0.74313766, 0, 0, 0, 0.74313766, 0, 0, 0)
+transform = Transform3D(0.91799355, 0, 0, 0, 0.91799355, 0, 0, 0, 0.91799355, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot5/Pivot" unique_id=553624708 instance=ExtResource("6_roygw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44227493, -0.051727474, 0.00068838894)
@@ -190,7 +190,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44227493, -0.051727474, 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4965, -1.1934, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot6" unique_id=2012631371]
-transform = Transform3D(0.5482305, 0, 0, 0, 0.5482305, 0, 0, 0, 0.5482305, 0, 0, 0)
+transform = Transform3D(0.67722595, 0, 0, 0, 0.67722595, 0, 0, 0, 0.67722595, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot6/Pivot" unique_id=1509530758 instance=ExtResource("7_aip3h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47468698, -0.0049771667, -1.0430813e-07)
@@ -199,7 +199,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47468698, -0.0049771667, -1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8305, -1.7245, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot7" unique_id=1006299898]
-transform = Transform3D(0.7046702, 0, 0, 0, 0.7046702, 0, 0, 0, 0.7046702, 0, 0, 0)
+transform = Transform3D(0.87047493, 0, 0, 0, 0.87047493, 0, 0, 0, 0.87047493, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot7/Pivot" unique_id=332401328 instance=ExtResource("8_jr3cu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3030511, 0.0034009218, 0.005231343)
@@ -208,7 +208,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3030511, 0.0034009218, 0.00
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9141, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot8" unique_id=2054041163]
-transform = Transform3D(0.41415086, 0, 0, 0, 0.41415086, 0, 0, 0, 0.41415086, 0, 0, 0)
+transform = Transform3D(0.5115981, 0, 0, 0, 0.5115981, 0, 0, 0, 0.5115981, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot8/Pivot" unique_id=1231138302 instance=ExtResource("9_dyui5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5617933, -0.07701966, 0.009186715)
@@ -217,7 +217,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5617933, -0.07701966, 0.009
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8305, -1.7245, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot9" unique_id=542528859]
-transform = Transform3D(0.48987156, 0, 0, 0, 0.48987156, 0, 0, 0, 0.48987156, 0, 0, 0)
+transform = Transform3D(0.60513544, 0, 0, 0, 0.60513544, 0, 0, 0, 0.60513544, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot9/Pivot" unique_id=1008679600 instance=ExtResource("10_mqf6r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39747822, -0.07575616, -0.002246648)
@@ -226,7 +226,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39747822, -0.07575616, -0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4965, -1.1934, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot10" unique_id=777253899]
-transform = Transform3D(0.70553243, 0, 0, 0, 0.70553243, 0, 0, 0, 0.70553243, 0, 0, 0)
+transform = Transform3D(0.87154007, 0, 0, 0, 0.87154007, 0, 0, 0, 0.87154007, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot10/Pivot" unique_id=1589630975 instance=ExtResource("11_apyuj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.087779045, 0.004195094, -2.9802322e-08)
@@ -235,7 +235,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.087779045, 0.004195094, -2.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8661, -0.4259, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot11" unique_id=423186771]
-transform = Transform3D(0.6530434, 0, 0, 0, 0.6530434, 0, 0, 0, 0.6530434, 0, 0, 0)
+transform = Transform3D(0.80670065, 0, 0, 0, 0.80670065, 0, 0, 0, 0.80670065, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot11/Pivot" unique_id=1296557716 instance=ExtResource("12_1y1q8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12989414, -0.2635991, -0.000409469)
@@ -244,7 +244,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12989414, -0.2635991, -0.00
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8661, 0.4259, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot12" unique_id=425720337]
-transform = Transform3D(0.6035701, 0, 0, 0, 0.6035701, 0, 0, 0, 0.6035701, 0, 0, 0)
+transform = Transform3D(0.7455866, 0, 0, 0, 0.7455866, 0, 0, 0, 0.7455866, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot12/Pivot" unique_id=1363875016 instance=ExtResource("13_ppnru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.022637963, -0.4687078, 3.7252903e-08)
@@ -253,7 +253,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.022637963, -0.4687078, 3.7
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4965, 1.1934, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot13" unique_id=1469147958]
-transform = Transform3D(0.62835467, 0, 0, 0, 0.62835467, 0, 0, 0, 0.62835467, 0, 0, 0)
+transform = Transform3D(0.7762028, 0, 0, 0, 0.7762028, 0, 0, 0, 0.7762028, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot13/Pivot" unique_id=1830757731 instance=ExtResource("14_x7ylx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0008275658, -0.49246567, 0)
@@ -262,7 +262,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0008275658, -0.49246567, 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8305, 1.7245, 0)
 
 [node name="Pivot" type="Node3D" parent="ModelsViewport/WheelScene/Slot14" unique_id=1705665448]
-transform = Transform3D(0.7661102, 0, 0, 0, 0.7661102, 0, 0, 0, 0.7661102, 0, 0, 0)
+transform = Transform3D(0.9463714, 0, 0, 0, 0.9463714, 0, 0, 0, 0.9463714, 0, 0, 0)
 
 [node name="Model" parent="ModelsViewport/WheelScene/Slot14/Pivot" unique_id=1721409004 instance=ExtResource("15_oex3a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00015725195, -0.11515221, -0.0014530532)

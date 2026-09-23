@@ -10,7 +10,8 @@ enum State { SPAWN, ADVANCE, HOLD, DEAD }
 const MASK_BANDIT_SHOT := 1 | 2   # world + player
 const WEAPON_MESH_NAMES := ["AK", "GrenadeLauncher", "Knife_1", "Knife_2", "Pistol", "Revolver", "Revolver_Small",
 	"RocketLauncher", "ShortCannon", "Shotgun", "Shovel", "SMG", "Sniper", "Sniper_2"]
-const CONE := 5.0
+const CONE := 5.0          # horizontal half angle of the spread, degrees
+const CONE_VERTICAL := 0.5  # vertical: shots at the belt never lob over chest height cover (pillar 3)
 const DAMAGE := 6.0
 const GRAVITY := 24.0
 
@@ -160,7 +161,12 @@ func _face(dir: Vector3, delta: float, turn: float) -> void:
 func _shoot() -> void:
 	var origin := muzzle.global_position
 	var aim := _aim_point()
-	var dir: Vector3 = preload("res://scripts/weapons/weapon.gd").spread((aim - origin).normalized(), CONE)
+	var fwd := (aim - origin).normalized()
+	var side := fwd.cross(Vector3.UP).normalized()
+	var up := side.cross(fwd).normalized()
+	var r := sqrt(randf())
+	var a := randf() * TAU
+	var dir := (fwd + side * tan(deg_to_rad(CONE * r * cos(a))) + up * tan(deg_to_rad(CONE_VERTICAL * r * sin(a)))).normalized()
 	var q := PhysicsRayQueryParameters3D.create(origin, origin + dir * 40.0, MASK_BANDIT_SHOT, [get_rid()])
 	var hit := get_world_3d().direct_space_state.intersect_ray(q)
 	var end: Vector3 = hit.position if hit else origin + dir * 40.0

@@ -1,6 +1,6 @@
 # Container Yard
 
-A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **TBD, filled after the build**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster, a pistol and a knife and find the other eleven weapons of the kit lying around the yard: revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, a second knife and a shovel. A weapon wheel held open with Tab shows all fourteen as their real 3D models, rotating. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
+A third person, over the shoulder arena shooter built in **Xogot for Mac** (a native Godot 4.7 editor) by **Claude Opus 5.5**, driven from the Claude desktop app through Xogot's `xo` command line tool. You are the green soldier holding a container yard against five waves of red bandits: run between stacked shipping containers, sandbag lines and a wrecked car, aim over your shoulder and fire. You start with a blaster, a pistol and a knife and find the other eleven weapons of the kit lying around the yard: revolvers, an SMG, shotguns, snipers, a grenade launcher, a rocket launcher, a second knife and a shovel. A weapon wheel held open with Tab shows all fourteen as their real 3D models, rotating. Bandits arrive on foot from the back of the yard and shoot in bursts when they see you; a container or a sandbag wall between you and them blocks their shots, but not yours over the sandbags. Clear the five waves for the results screen and the score to beat, or get overrun and see which wave did it.
 
 It starts from an empty project, one free asset pack, one concept image and one design document. Every scene in the game is created and edited inside the Xogot editor by the agent (scene, node, material, particle and UI commands through `xo`), not hand written as `.tscn` text.
 
@@ -10,7 +10,24 @@ Built for the next Letta Corporation video.
 
 1. Install [Xogot for Mac](https://xogot.com/mac) (free while it is in beta) or Godot 4.7.
 2. Open `project.godot`.
-3. Press play. Controls: TBD, filled after the build (the design specifies WASD to move, mouse to aim, left button to fire, right button to aim, hold Tab and move the mouse for the weapon wheel, mouse wheel to cycle, Q for the previous weapon, Escape to pause; F1 is a development only view that snaps the camera to the concept image's pose).
+3. Press play. The game opens on the title screen over the live yard; Play starts a run of five waves.
+
+| Input | Action |
+|---|---|
+| W A S D or the arrow keys | move, relative to the camera |
+| Mouse | aim (the camera sits over the right shoulder) |
+| Left button | fire (hold for the automatic weapons, press for the others, swing for the melee ones) |
+| Right button | aim down the sights: narrower view, tighter spread, a scope for the two snipers |
+| Hold Tab, move the mouse, release | the weapon wheel: pick any unlocked weapon (time slows to a quarter while it is open) |
+| Mouse wheel / Q | next or previous unlocked weapon / swap back to the last one |
+| Escape | pause (resume, restart, menu, music and sound toggles) |
+| F1 (development only) | hold to snap to the concept image's camera, with the concept's two bandits posed, for the side by side comparisons |
+
+You start with the blaster, the pistol and the knife; the other eleven weapons are crates around the yard. Walk into one to unlock it; it comes back 45 s later as an ammo refill. Sandbags and containers stop the bandits' shots; theirs come in bursts of three.
+
+### Running the tests
+
+`sh tools/run_tests.sh` with the project open in Xogot runs every suite: the structural ones in `tests/editor/` through `xo test run --root res://tests/editor`, the behaviour ones in `tests/game/` inside a fresh live arena through `xo game eval`, and the menu check (`tools/check_menu.py`). `python3 tools/gen_audio.py --verify` checks the three audio rules.
 
 ## The game design document
 
@@ -30,7 +47,7 @@ The full spec lives in [`docs/GDD.md`](docs/GDD.md) (also as [`docs/GDD.pdf`](do
    - **1.0** the pre build specification (sections 0 to 15).
    - **1.1** the full arsenal: all fourteen weapons of the kit (section 16).
    - **1.2** three starting weapons, eleven unlocks placed around the yard, and the weapon wheel with rotating 3D models (section 17).
-   - TBD, filled after the build.
+   - **1.3** implementation notes: where the shipped build deviated from 1.0 to 1.2 and why (section 18): the concept region placed again by back projection from the image, the camera at 3.0 / -8°, chain link fences that stop bodies but not bullets, flat colour ambient light, ballistic grenades, the bandits' elliptical spread, and how the tests run.
 
 6. **Iterate with screenshots, not descriptions.** The concept image is the acceptance test for the look, judged in a fixed check order (camera height and horizon, distance and FOV, subject position, silhouettes, props, sky, ground, sun, fog, glow, grade, UI), fixing only the first failing item each time. The agent takes its own screenshots and runs the game through `xo`, so it checks its own work before reporting back.
 
@@ -43,16 +60,17 @@ The commit history of this repo follows the build order in section 13.2 one step
 | `docs/GDD.md`, `docs/GDD.pdf` | the game design document, all versions in one file |
 | `docs/asset-inventory.md` | every model in the pack with its `res://` path and measured size |
 | `docs/concept/concept.png` | the approved concept image, the acceptance test for the look |
-| `docs/evidence/` | the concept comparisons and the run screenshots produced during the build |
-| `scenes/` | every scene, created in the Xogot editor (`actors/`, `weapons/`, `fx/`, `ui/`) |
-| `scripts/` | GDScript, one script per scene plus the `autoload/` singletons (`Game`, `Audio`) |
-| `tests/` | the `test_*.gd` suites run by `xo test run` |
-| `tools/` | the audio synthesiser and the comparison image script |
+| `docs/evidence/` | the concept comparisons (`comparison-01` to `04`, `comparison-final`), one screenshot per wave of a full run, the results and overrun screens, every weapon firing, the weapon wheel, the yard from above |
+| `scenes/` | every scene, created in the Xogot editor: `arena.tscn`, `main.tscn`, `audio.tscn`, and `props/` (28 prop prefabs with collision), `actors/`, `weapons/` (14 weapons, grenade, rocket), `fx/`, `ui/` |
+| `scripts/` | GDScript: one script per scene, the shared `weapons/weapon.gd`, and the `autoload/` singletons (`Game`, `Audio`) |
+| `materials/`, `env/`, `fx/`, `shaders/`, `ui/` | container colours and effect materials, the yard environment, particle materials and meshes, the damage vignette, the UI theme |
+| `tests/editor/`, `tests/game/` | the structural suites (`xo test run`) and the behaviour suites run inside the live game (`xo game eval`) |
+| `tools/` | `gen_audio.py` (audio synthesiser and `--verify`), `compare.py` (concept comparisons and the value table), `check_menu.py`, `run_tests.sh` |
 | `assets/Toon Shooter Game Kit - Dec 2022/` | Quaternius pack, untouched |
 | `assets/audio/` | the SFX and music loops synthesised by `tools/gen_audio.py` |
 | `.claude/skills/xogot/` | the `xo` skill Xogot installs for external agents |
 
-At the time of the first commit only `docs/`, `assets/Toon Shooter Game Kit - Dec 2022/` and `.claude/` exist: the project holds the pack, the design document and nothing else, zero scenes, zero scripts. The other folders appear during the build.
+At the `project-setup` tag only `docs/`, `assets/Toon Shooter Game Kit - Dec 2022/` and `.claude/` exist: the project holds the pack, the design document and nothing else, zero scenes, zero scripts. Everything else is the build.
 
 ## License
 
@@ -62,5 +80,5 @@ The project is released under the **MIT License** (see [`LICENSE`](LICENSE)). Th
 
 - 3D art: [Toon Shooter Game Kit](https://quaternius.com/packs/toonshootergamekit.html) by Quaternius (CC0).
 - Editor: [Xogot for Mac](https://xogot.com/mac).
-- Build: TBD, filled after the build; design document with Claude Opus.
+- Build: Claude Opus 5.5 through the Claude desktop app; design document with Claude Opus.
 - Produced by [Letta Corporation](https://lettacorporation.com).

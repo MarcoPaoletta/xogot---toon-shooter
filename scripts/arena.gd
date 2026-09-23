@@ -49,6 +49,8 @@ func _ready() -> void:
 		player.visible = false
 		hud.visible = false
 		player.get_node("CameraRig/Pitch/Arm/Camera").current = false
+		for c in $WeaponCrates.get_children():
+			c.get_node("Name").visible = false
 		return
 	player.global_position = player_spawn.global_position
 	player.rotation.y = 0.0

@@ -5,8 +5,8 @@
 **Engine stamp:** `config/features = ["4.7", "Mobile"]` (Xogot 1.7.2 / Godot 4.7.2). Never upgraded by the build.
 **Art:** Quaternius *Toon Shooter Game Kit* (Dec 2022), CC0, imported at `res://assets/Toon Shooter Game Kit - Dec 2022/` (the pack's own folder name, structure untouched). Every model, with its measured size, is listed in `docs/asset-inventory.md`.
 **Concept image:** `docs/concept/concept.png` (1600 x 893). It is the acceptance test for the look, see section 1.
-**Document version:** 1.2, 2026-09-20 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16; 1.2 three starting weapons, eleven unlocks in the yard and the weapon wheel, section 17).
-**Status:** Specification. At the time of writing the project contains the asset pack, this document and nothing else: zero scenes, zero scripts.
+**Document version:** 1.3, 2026-09-23 (1.0 pre-build specification, sections 0 to 15; 1.1 the full arsenal, section 16; 1.2 three starting weapons, eleven unlocks in the yard and the weapon wheel, section 17; 1.3 implementation notes after the build, section 18).
+**Status:** Built. Sections 0 to 17 are the specification as it was written before the build (when the project contained the pack, this document and nothing else); section 18 records where the shipped game deviates and why.
 
 ---
 
@@ -640,3 +640,63 @@ Bottom right: the held weapon's name (32 px) and ammo (40 px, "∞" for the blas
 - `tests/test_crates.gd` becomes: at the start of wave 1 exactly eleven `WeaponCrate` nodes exist, one per non starting weapon, at the positions of 17.1 (± 0.01); a scripted player teleported into each of them ends with fourteen unlocked weapons and the counter reading "14 / 14"; a picked crate is absent for 45 s and present again at 46 s with the refill label; the melee crates do not return.
 - `tests/test_wheel.gd` (replaces `test_switch.gd`): with Tab held, an injected mouse delta of 120 px toward sector k (angle `k x 25.7°` clockwise from the top) followed by a Tab release equips weapon k if unlocked and leaves the held weapon unchanged if locked; the time scale is 0.25 while open and 1.0 after; every `Slot1` to `Slot14` contains a `MeshInstance3D` whose mesh comes from the right `Guns/glTF/` file (checked by the model's node name); locked slots carry the override and unlocked ones do not; the models' rotation advances between two frames.
 - The definition of done item 8 of 16.9 becomes: a run watched through screenshots in which the player finds all eleven crates and fires every one of the fourteen weapons (`docs/evidence/weapon-<name>.png`), plus `docs/evidence/wheel-open.png` showing the wheel with at least six unlocked models and at least one locked silhouette, and `docs/evidence/wheel-full.png` with all fourteen unlocked.
+
+## 18. Version 1.3: implementation notes (added after the build; supersedes where stated)
+
+The game was built along the build order of 13.2 (with 16.7 and 17), in the Xogot editor through `xo`, by Claude Opus 5.5 in one session. These are the places where the shipped game deviates from sections 0 to 17, and why. Everything not listed here was built as written.
+
+### 18.1 Engine and project
+- Xogot 1.7.2 / Godot 4.7.2, `config/features = ["4.7", "Mobile"]`, never upgraded. Launch settings as in 11: 1920 x 1080, `canvas_items`, `expand`, fullscreen, MSAA 2x.
+- Autoloads: `Game` (`res://scripts/autoload/game.gd`) and `Audio`, which is a saved scene (`res://scenes/audio.tscn`: 12 flat and 16 positional `AudioStreamPlayer` nodes plus `MusicA` / `MusicB`) so the SFX pool is built in the editor, not in code. Actors play their sounds through `Audio` instead of owning `Sounds` children. Buses Master, Music (with a low pass used for the 0.3 s hit muffle), SFX in `res://default_bus_layout.tres`.
+- Collision layers: 1 world, 2 player, 3 bandits, 4 pickups, **5 fence** (new, 18.4).
+
+### 18.2 The concept region, placed again by back projection (supersedes the coordinates of 7.1)
+The 7.1 coordinates put the whole concept region about twice as far from the camera as the image shows (`comparison-01.png`). The concept's ground contact points (container bottoms, the tank's tracks, the fence posts, the bandits' feet) were back projected through the `ConceptCam` model onto the ground plane, and the props were placed there. The concept is a compact scene: the red container's front is 4 units in front of the player, the right hand fence runs parallel to the frame 1.4 units behind the camera plane of the player. Final positions (model origin, Y rotation in degrees):
+
+| Node | Position | Rot. | Node | Position | Rot. |
+|---|---|---|---|---|---|
+| `FenceLeftA` | (-4.27, 0, 5.19) | -21 | `FenceLeftB` | (-7.83, 0, 3.84) | -21 |
+| `ContainerRedGround` | (-0.88, 0, 1.36) | 0 | `ContainerRedGroundBack` (new, red long, supports the upper red) | (-2.0, 0, -0.8) | 0 |
+| `ContainerYellowLeft` (now a long yellow) | (-5.7, 0, 0.52) | 0 | `ContainerBlueUpper` | (-3.9, 2.13, 0.75) | 0 |
+| `ContainerRedBack` | (-0.6, 2.13, -0.8) | 0 | `SandbagsUpperA` / `B` / `Left` | (0.9, 2.13, 1.6) / (-0.4, 2.13, 1.95) / (-5.0, 4.26, 1.0) | 5 / 0 / 0 |
+| `WreckedCar` | (-4.7, 0, 2.9) | 72 | `CratesFront1..3` | (-1.9, 0, 2.95), (-1.05, 0, 2.85), (-1.45, 0.79, 2.9) | 0, 12, 5 |
+| `SandbagLine` (now `SackTrench_Small`) | (2.3, 0, 1.9) | 33 | `SandbagLineB` | (7.9, 0, -1.6) | 10 |
+| `TankYellow` | (4.63, 0, 2.4) | -65 | `WaterTower` | (4.6, 0, -11) | 0 |
+| `FenceRightA` / `B` | (6.1, 0, 7.42) / (9.9, 0, 7.42) | 0 | `ContainerBlueRight` / `ContainerYellowRight` | (7.5, 0, 4.35) / (7.5, 2.13, 4.45) | 0 |
+| `CratesRight1..3` | (5.3, 0, 8.45), (6.15, 0, 8.2), (5.6, 0.79, 8.35) | 5, 20, 10 | `TiresRight` | (5.2, 0, 6.35) | 20 |
+| `CrateStackLeft1..3` | (-5.0, 0, 4.1), (-5.0, 0.79, 4.1), (-5.85, 0, 3.8) | 5, 12, 20 | `SandbagsRight` (moved to the north half as cover) | (-3, 0, -9) | -15 |
+| `BanditPose1` / `2` | (2.68, 0, 3.43) / (3.86, 0, 5.0) | -46 / -75 | trees behind the stack | `TreeBack3` (2.6, 0, -13.5), `TreeBack4` (0.3, 0, -7.5), `TreeBack5` (10.5, 0, -12), `TreeBack6` (15, 0, -2), `TreeLeft1` (-9.5, 0, -3.5) | |
+
+The rest of the yard (7.1 "the rest of the yard", the perimeter and the outside ring) is as written.
+
+### 18.3 Camera (supersedes the numbers of 1.2 and 6)
+- `ConceptCam` and the gameplay camera at spawn are at **(1.4, 3.0, 12.6), pitched -8°**, FOV 50 (1.2 said 2.7 and -7°). Check item 3 of 1.5 failed at 2.7 / -7° (the player's feet at 79 % of the frame height against the concept's 85 %); at 3.0 / -8° the feet are at 82 %, the head at 52 % (concept 53 %) and the red container's top at 42 % (concept 40 %). The horizon is at 35 %.
+- A `SpringArm3D` places its children at the end of the arm, so the over the shoulder offset lives on the arm itself: `Arm` at (1.4, 0.468, 0) in `Pitch`, `spring_length` 6.731, `Camera` at the arm's end. This reproduces `ConceptCam` exactly (`test_camera`: 0.0001 units, 0.000°). Aiming shortens the arm by the ratio 5.2 / 6.6.
+- **Shoulder probe:** a ray from the pivot to the arm's origin pulls the 1.4 sideways offset in (to at least 0.2) when a wall is beside the camera, and eases it back out at 4 units per second. Without it a container on the right filled half the screen. The follow position is still exact; only the shoulder offset eases.
+- Mouse look reads `InputEventMouseMotion.screen_relative`: 0.1° per **screen** pixel. With `canvas_items` stretch, `relative` is scaled by the window size (a 2816 px wide window turned the camera 0.66 times as far), which the facing tests caught.
+
+### 18.4 Chain link fences (new)
+`Barrier_Large` and `Barrier_Fixed` panels are on physics layer 5 `fence`: they stop the player and the bandits (their masks include 5, and the navigation bake parses layers 1 and 5), but bullets, rockets and grenades pass through the chain link. Each panel has a `Base` body on layer 1 (3.81 x 0.62 x 0.67) so the hazard striped base still stops shots. The two gates' invisible blocks are on layer 5 too. In the first playtest a bandit and the player stood on either side of a fence unable to hit each other; this is why.
+
+### 18.5 Light by value (supersedes the environment numbers of 1.6)
+Ambient light comes from a flat colour, `#cfc6bd` at energy 0.42, not from the sky: with sky ambient the shaded ground rendered `#b18d55` against the target `#8a6a55` and the shadows washed out. Sun energy 2.5 (was 1.5). Sky `sky_top_color #9ccbf3`, `sky_horizon_color #fff0dc`, `sky_energy_multiplier` 1.45, `fog_sky_affect` 0.05. Ground albedo `#d9803a`, grass `#7c9a3c`. A second `DirectionalLight3D` named `Fill` (`#ffe6cc`, energy 0.7, no shadows, from the camera side at 4° elevation) lights the camera facing faces warm, as in the concept, without lighting the ground in shadow. Result of `tools/compare.py --values` on the final comparison: sky top 4 %, sky horizon 7 %, shaded ground 11 %, blue container front, sandbags, tree canopy, water tower and soldier helmet within tolerance; the rows that fail sample a different object at the same pixel (for example the concept's sunlit ground point falls in a fence shadow in the game), not a wrong colour.
+
+### 18.6 Weapons, crates and the wheel
+- **Grenade launcher:** the launch direction is solved ballistically so the arc lands on the crosshair point (the low solution; 45° when out of reach). Aimed straight, an 18 u/s grenade under 24 u/s² gravity dropped 5 units over 12 metres and never reached what the player aimed at. A grenade that touches a bandit explodes where it was on its last frame before the contact: the physics solver throws it back out of a character body first, which put the first explosions outside their own radius.
+- `Grenade` and `Rocket` emit `exploded(position, radius, damage_centre, damage_edge)` (16.5) and call `Arena.explode`.
+- Crate positions moved where 17.1's spot overlapped a prop after 18.2: `CrateRevolver` (-5.6, 0, 10.6), `CrateRevolverSmall` (4.5, 0, 15.5) (at (3, 0, 11) its label filled the spawn camera), `CrateSMG` (-9.4, 0, 1.6), `CrateShortCannon` (15.5, 0, 9.5), `CrateSniper` (-9.5, 0, -16), `CrateSniper2` (-15.6, 0, 12), `CrateShovel` (1.5, 0, 13.2). The others are as written. The name label is 0.4 units tall (0.6 filled the frame at close range).
+- **Wheel geometry:** the slots sit on a circle of 1.914 units (245 px, the middle of the 190 to 300 px ring, at 128 px per unit) instead of 3.2 units, which would have put the models outside the ring; each model's longest side is 1.05 units.
+- Health pickups appear at the start of every breather, including the first.
+
+### 18.7 Bandits
+The bandit's spread is **elliptical**: 5° side to side, 0.5° up and down, instead of a round 5° cone. With a round cone, shots aimed at the belt cleared the 1.24 high collision top of a `SackTrench` and hit the upper body of a player crouched behind it (`test_cover` measured 6 to 18 damage in 10 s). Pillar 3 says sandbags block their shots; now they do (0 damage from 66 shots, repeatedly).
+
+### 18.8 Tests: how they run, and the adaptations
+- `xo test run` executes inside the editor, where the game's scripts (not `@tool`) do not run. The structural suites are in `tests/editor/` (`test_scenes`, `test_arena`) and run with `xo test run --root res://tests/editor`. The behaviour suites are in `tests/game/` (a `.gdignore` keeps the editor runner away from them) and run inside the live arena with `xo game eval --file tests/game/<suite>.gd`: `test_camera`, `test_facing`, `test_weapons`, `test_bandit_bounds`, `test_cover`, `test_crates`, `test_wheel`, `test_scenes_runtime`. `sh tools/run_tests.sh` runs everything, a fresh arena per suite. `test_menu` is `tools/check_menu.py` (two screenshots 3 s apart).
+- Facing test 1: at spawn the crosshair ray passes 1.4 units to the right of the player and meets the ground before (0, 1.4, -14), so the 1 x 1 wall is placed on the crosshair ray 6 units ahead. Facing test 3 starts from (0, 0, 10): at spawn the left fence stops a 2.5 unit strafe to the left after 2.0 units.
+- `test_weapons`: "12 units in front of the camera" is about 5.4 units from where the shot ray starts, beside the player, so the pellet and SMG hit fractions are the ones measured for that geometry (SMG 1.0, shotgun 0.95, sawn off 0.65 instead of 0.8 / 0.7 / 0.7), and the two shotguns are averaged over five one second trials.
+- `test_cover`: the player steps **three** units sideways, not two: with a 3.35 wide wall, two units from its middle leaves the line of fire only 0.13 units past the wall's end, because of parallax.
+- `test_bandit_bounds` removes a bandit once it has lived 10 s, so the waves advance without the player shooting; it runs at twice the time scale; and it ends with a negative control, a bandit with speed 0, which the travel clause reports as failing.
+
+### 18.9 Playtest notes
+A scripted player that only stands at the spawn, aims at the nearest visible bandit and holds fire clears the five waves in about 1:45 of game time (40 kills, 8 250 points with the survival bonus); the same player without invulnerability is overrun in wave 1 in about 17 s when it never uses cover, which is the design (pillar 3). The wave table of section 12 is unchanged.

@@ -7,8 +7,8 @@
 [node name="Explosion" type="GPUParticles3D" unique_id=1159095173]
 cast_shadow = 0
 emitting = false
-amount = 24
-lifetime = 0.5
+amount = 40
+lifetime = 0.6
 one_shot = true
 explosiveness = 1.0
 process_material = ExtResource("1_05ub2")

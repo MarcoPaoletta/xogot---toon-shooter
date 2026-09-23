@@ -42,6 +42,8 @@ var ammo := 0
 var _cooldown := 0.0
 var _extra_cone := 0.0
 var _since_shot := 99.0
+var shots_fired := 0          # for the test suites
+var last_hit_bodies: Array = []
 
 
 func refill() -> void:
@@ -78,6 +80,8 @@ func fire() -> void:
 		return
 	_cooldown = 1.0 / rate
 	_since_shot = 0.0
+	shots_fired += 1
+	last_hit_bodies.clear()
 	if not infinite():
 		ammo -= 1
 	match mode:
@@ -103,6 +107,23 @@ static func spread(fwd: Vector3, cone_deg: float) -> Vector3:
 	var r := deg_to_rad(cone_deg) * sqrt(randf())
 	var a := randf() * TAU
 	return (fwd * cos(r) + (side * cos(a) + up * sin(a)) * sin(r)).normalized()
+
+
+## Launch direction so an arcing projectile lands on `target` (the low solution); 45 degrees when out of reach.
+static func ballistic(from: Vector3, target: Vector3, speed: float, g: float) -> Vector3:
+	var d := target - from
+	var flat := Vector2(d.x, d.z)
+	var x := flat.length()
+	if x < 0.01:
+		return d.normalized()
+	var y := d.y
+	var v2 := speed * speed
+	var disc := v2 * v2 - g * (g * x * x + 2.0 * y * v2)
+	var angle := PI * 0.25
+	if disc >= 0.0:
+		angle = atan((v2 - sqrt(disc)) / (g * x))
+	var h := flat.normalized()
+	return Vector3(h.x * cos(angle), sin(angle), h.y * cos(angle)).normalized()
 
 
 ## The crosshair ray starts beside the player, so nothing between the camera and the player blocks it.
@@ -135,6 +156,7 @@ func _fire_hitscan() -> void:
 		var end: Vector3 = hit.position if hit else start + dir * max_range
 		var body = hit.collider if hit else null
 		var is_bandit: bool = body != null and body.is_in_group("bandits")
+		last_hit_bodies.append(body)
 		if arena:
 			arena.shot_fx(muzzle, end, hit.get("normal", Vector3.UP), hit != {}, is_bandit, tracer_color, i == 0, body)
 		if is_bandit:
@@ -164,6 +186,8 @@ func _fire_projectile() -> void:
 	(arena.get_node("Effects") if arena else get_tree().current_scene).add_child(p)
 	p.global_position = muzzle
 	var dir := (target - muzzle).normalized()
+	if projectile_gravity > 0.0:
+		dir = ballistic(muzzle, target, projectile_speed, projectile_gravity)
 	p.launch(dir * projectile_speed, projectile_gravity, damage, damage_edge, blast_radius, player)
 	if arena:
 		arena.flash_fx(muzzle, tracer_color)

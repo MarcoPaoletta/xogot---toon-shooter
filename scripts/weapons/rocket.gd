@@ -1,6 +1,8 @@
 extends Area3D
 ## Rocket: flies straight at 30 u/s with a smoke trail and explodes on any contact.
 
+signal exploded(position: Vector3, radius: float, damage_centre: float, damage_edge: float)
+
 var velocity := Vector3.ZERO
 var damage_centre := 120.0
 var damage_edge := 30.0
@@ -40,6 +42,7 @@ func _explode() -> void:
 	if done:
 		return
 	done = true
+	exploded.emit(global_position, radius, damage_centre, damage_edge)
 	var arena := get_tree().get_first_node_in_group("arena")
 	if arena:
 		arena.explode(global_position, radius, damage_centre, damage_edge)

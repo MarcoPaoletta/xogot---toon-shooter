@@ -64,11 +64,14 @@ var shake_amount := 0.0
 var shake_total := 0.0
 var input_override = null   # test hook: {"move": Vector2, "fire": bool, "aim": bool}
 var heartbeat_timer := 0.0
+var shoulder := 1.4            # the arm's sideways offset; pulled in when a wall is beside the camera
+var _arm_offset := Vector3.ZERO
 
 
 func _ready() -> void:
 	add_to_group("player")
 	arm_length = arm.spring_length
+	_arm_offset = arm.position
 	arm.add_excluded_object(get_rid())
 	cam_yaw = rotation.y
 	for w in weapon_slot.get_children():
@@ -173,10 +176,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not alive or not controls_enabled:
 		return
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		# screen pixels, so the sensitivity does not change with the window size (canvas_items stretch)
 		if wheel_open and wheel:
-			wheel.add_delta(event.relative)
+			wheel.add_delta(event.screen_relative)
 		else:
-			look(event.relative)
+			look(event.screen_relative)
 	elif event.is_action_pressed("weapon_next"):
 		cycle(1)
 	elif event.is_action_pressed("weapon_prev"):
@@ -254,6 +258,17 @@ func _physics_process(delta: float) -> void:
 	# recoil returns over 0.12 s
 	recoil_pitch = move_toward(recoil_pitch, 0.0, max(abs(recoil_pitch), 0.6) / 0.12 * delta)
 	recoil_yaw = move_toward(recoil_yaw, 0.0, 0.2 / 0.12 * delta)
+
+	# the shoulder offset: probe from the pivot sideways to the arm's origin; a wall there pulls it in
+	var want_shoulder := _arm_offset.x
+	var from := pitch_node.global_position
+	var to := pitch_node.global_transform * Vector3(_arm_offset.x + 0.4, _arm_offset.y, 0)
+	var probe := PhysicsRayQueryParameters3D.create(from, to, 1, [get_rid()])
+	var side_hit := get_world_3d().direct_space_state.intersect_ray(probe)
+	if side_hit:
+		want_shoulder = clamp(from.distance_to(side_hit.position) - 0.5, 0.2, _arm_offset.x)
+	shoulder = want_shoulder if want_shoulder < shoulder else move_toward(shoulder, want_shoulder, 4.0 * delta)
+	arm.position = Vector3(shoulder, _arm_offset.y, _arm_offset.z)
 
 	# aim: FOV and arm length over 0.12 s
 	aim_blend = move_toward(aim_blend, 1.0 if aiming else 0.0, delta / AIM_TIME)

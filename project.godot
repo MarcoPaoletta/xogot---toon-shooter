@@ -106,6 +106,7 @@ pointing/emulate_touch_from_mouse=true
 3d_physics/layer_2="player"
 3d_physics/layer_3="bandits"
 3d_physics/layer_4="pickups"
+3d_physics/layer_5="fence"
 
 [rendering]
 
@@ -118,7 +119,7 @@ project/editorState=[{
 "column": 0,
 "current": true,
 "line": 0,
-"path": "gdscript://-9223371829974923581.gd",
+"path": "gdscript://-9223371935503612063.gd",
 "transient": true,
 "type": "file"
 }]
